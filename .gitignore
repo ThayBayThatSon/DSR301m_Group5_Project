@@ -1,0 +1,74 @@
+# =========================================================================
+# Git Ignore Configuration for Machine Learning Project
+# =========================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook Checkpoints & Cache
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Model training logs & temporary scratch files
+catboost_info/
+scratch/
+tmp/
+*.log
+*.tmp
+
+# Trained model binaries (reproducible via scripts/execute_all_notebooks.py)
+*.joblib
+*.pkl
+artifacts/models/*.joblib
+artifacts/models/*.pkl
+!artifacts/models/.gitkeep
+
+# Operating System specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDE & Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo

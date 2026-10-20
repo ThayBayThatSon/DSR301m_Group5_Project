@@ -1,0 +1,28 @@
+[
+  {
+    "scenario":"1h",
+    "family":"Bagging Trees",
+    "model":"Random Forest",
+    "val_R2_2024":0.9000613415,
+    "val_MAE_2024":4.7431768546,
+    "test_R2_2025":0.9538885446,
+    "test_MAE_2025":3.3302986154,
+    "test_RMSE_2025":5.6861492899,
+    "test_sMAPE_2025":6.7450653385,
+    "test_F1_150":0.7795414413,
+    "time_sec":9.4947986603
+  },
+  {
+    "scenario":"24h",
+    "family":"Bagging Trees",
+    "model":"Random Forest",
+    "val_R2_2024":0.5418631971,
+    "val_MAE_2024":11.4774539292,
+    "test_R2_2025":0.6037190045,
+    "test_MAE_2025":11.5324349784,
+    "test_RMSE_2025":16.6272215122,
+    "test_sMAPE_2025":21.6107055757,
+    "test_F1_150":0.2467866294,
+    "time_sec":8.9300928116
+  }
+]

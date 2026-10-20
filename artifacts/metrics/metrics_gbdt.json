@@ -1,0 +1,80 @@
+[
+  {
+    "scenario":"1h",
+    "family":"Gradient Boosting",
+    "model":"LightGBM",
+    "val_R2_2024":0.9091093444,
+    "val_MAE_2024":4.4676929389,
+    "test_R2_2025":0.9537955944,
+    "test_MAE_2025":3.1306379092,
+    "test_RMSE_2025":5.6918773994,
+    "test_sMAPE_2025":6.3729470934,
+    "test_F1_150":0.8177172012,
+    "time_sec":1.0430223942
+  },
+  {
+    "scenario":"1h",
+    "family":"Gradient Boosting",
+    "model":"XGBoost",
+    "val_R2_2024":0.9090099194,
+    "val_MAE_2024":4.4428799875,
+    "test_R2_2025":0.9538313983,
+    "test_MAE_2025":3.1007483581,
+    "test_RMSE_2025":5.6896716461,
+    "test_sMAPE_2025":6.3031413769,
+    "test_F1_150":0.8129251651,
+    "time_sec":2.1285755634
+  },
+  {
+    "scenario":"1h",
+    "family":"Gradient Boosting",
+    "model":"CatBoost",
+    "val_R2_2024":0.9078753504,
+    "val_MAE_2024":4.4956152757,
+    "test_R2_2025":0.9540565176,
+    "test_MAE_2025":3.1316641217,
+    "test_RMSE_2025":5.6757832007,
+    "test_sMAPE_2025":6.4305106508,
+    "test_F1_150":0.8154362366,
+    "time_sec":3.1678910255
+  },
+  {
+    "scenario":"24h",
+    "family":"Gradient Boosting",
+    "model":"LightGBM",
+    "val_R2_2024":0.5496207467,
+    "val_MAE_2024":11.4040869582,
+    "test_R2_2025":0.6169716841,
+    "test_MAE_2025":11.3256333767,
+    "test_RMSE_2025":16.3468282795,
+    "test_sMAPE_2025":21.2560079621,
+    "test_F1_150":0.1225626721,
+    "time_sec":0.4103338718
+  },
+  {
+    "scenario":"24h",
+    "family":"Gradient Boosting",
+    "model":"XGBoost",
+    "val_R2_2024":0.5564021105,
+    "val_MAE_2024":11.2923708923,
+    "test_R2_2025":0.6158696692,
+    "test_MAE_2025":11.3617206261,
+    "test_RMSE_2025":16.3703272067,
+    "test_sMAPE_2025":21.3127957921,
+    "test_F1_150":0.1485714269,
+    "time_sec":0.6714193821
+  },
+  {
+    "scenario":"24h",
+    "family":"Gradient Boosting",
+    "model":"CatBoost",
+    "val_R2_2024":0.5534208962,
+    "val_MAE_2024":11.3363798633,
+    "test_R2_2025":0.6084151161,
+    "test_MAE_2025":11.4005985372,
+    "test_RMSE_2025":16.5284077928,
+    "test_sMAPE_2025":21.3298416904,
+    "test_F1_150":0.0771513343,
+    "time_sec":1.4477031231
+  }
+]
