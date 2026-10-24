@@ -487,3 +487,102 @@
 * **Tính nhất quán vật lý (Physical Consistency):** Phân tích SHAP Beeswarm Summary Plot khẳng định mô hình tuân thủ hoàn hảo các định luật khí tượng:
   * **Gió đối lưu phân tán ô nhiễm:** Các điểm tốc độ gió cao (màu đỏ) nằm hoàn toàn ở miền giá trị SHAP âm $\to$ Gió mạnh kích hoạt đối lưu khuếch tán, cuốn trôi và pha loãng nồng độ ô nhiễm.
   * **Nhiệt độ kích thích quang hóa:** Các điểm nhiệt độ cao (màu đỏ) nằm hoàn toàn ở miền giá trị SHAP dương $\to$ Nhiệt độ cao thúc đẩy các phản ứng quang hóa tạo bụi thứ cấp và làm bốc hơi độ ẩm thực vật, gia tăng ô nhiễm không khí.
+  * **Rửa trôi ướt qua giáng thủy (Wet Scavenging / Deposition):** Lượng mưa tương lai `future_rain` có giá trị SHAP âm $\to$ Các giọt mưa va chạm và lắng đọng các hạt aerosol lơ lửng xuống mặt đất, rửa sạch bầu không khí.
+* **Ưu thế phương pháp luận của TreeSHAP so với Gini Importance (MDI):**
+  * Mean Decrease Impurity (Gini/MDI) chỉ đo lường lượng giảm phương sai tại các nút phân nhánh, có thiên kiến ưu tiên các đặc trưng liên tục hoặc có nhiều mức giá trị, đồng thời không chỉ ra được hướng tác động (âm hay dương).
+  * TreeSHAP dựa trên nền tảng lý thuyết trò chơi hợp tác của Lloyd Shapley (giải Nobel 2012), đảm bảo 4 tiên đề toán học: Tính hiệu quả (*Efficiency*), Tính đối xứng (*Symmetry*), Tính cộng tính (*Additivity*), và Biến bù nhìn (*Dummy player*), cho phép phân rã sai số dự báo trực tiếp thành các điểm số AQI đóng góp cụ thể.
+
+---
+
+### ❓ CÂU HỎI 10: VỀ HIỆN TƯỢNG NÉN ĐUÔI CỰC ĐOAN VÀ HỆ SỐ GÓC $\beta < 1$ TRÊN BIỂU ĐỒ PARITY (SLIDE 11 & EDA)
+> **Giảng viên hỏi:** *"Trên biểu đồ Parity Plot (Actual vs Predicted), tại sao ở kịch bản 24h, đường hồi quy thực tế lại bị bẹp xuống với hệ số góc chỉ đạt $\beta = 0.54 - 0.56$, và mô hình có xu hướng dự báo thấp hơn thực tế ở các mức AQI > 200 (Extreme Tail Compression)?"*
+
+#### 🛡️ CƠ SỞ PHẢN BIỆN DỰA TRÊN DỮ LIỆU & LÝ THUYẾT:
+* **Bản chất toán học của Hàm mất mát (Loss Function Asymmetry & MSE Penalty):**
+  * Mô hình GBDT tối ưu hóa hàm mất mát bình phương sai số trung bình (MSE/MAE) trên toàn bộ phân phối huấn luyện.
+  * Phân phối AQI California bị mất cân bằng trầm trọng: Hơn 98.9% số mẫu nằm ở mức $AQI \le 100$, trong khi các sự kiện cháy rừng $AQI > 150$ chỉ chiếm vỏn vẹn **1.08%** tổng số quan trắc.
+  * Trong điều kiện bất định ở chân trời 24h (khi mất hoàn toàn tín hiệu cảm biến mặt đất), nếu mô hình mạo hiểm dự báo một giá trị cực đoan $300\text{ AQI}$ dựa trên trường gió có nguy cơ cháy, nhưng đám cháy thực tế không bùng phát (thực tế chỉ $40\text{ AQI}$), thì hình phạt sai số bình phương sẽ cực kỳ khốc liệt: $(300 - 40)^2 = 67,600$.
+  * Để cực tiểu hóa kỳ vọng mất mát toàn cục $\mathbb{E}[(y - \hat{y})^2]$, thuật toán tất yếu sẽ dự báo giá trị kỳ vọng có điều kiện $\hat{y} = \mathbb{E}[y | X]$, dẫn tới hiện tượng **Co về trung bình (Regression to the Mean / Shrinkage)**.
+* **Giới hạn cấu trúc của Cây quyết định (Tree Partitioning & Extrapolation Ceiling):**
+  * Giá trị đầu ra tại mỗi nút lá của cây quyết định là trung bình cộng của các mẫu rơi vào lá đó ($\bar{y}_{\text{leaf}}$).
+  * Do số lượng mẫu $AQI > 200$ trong mỗi lá phân nhánh là rất ít và luôn bị pha loãng bởi các mẫu lân cận có mức ô nhiễm thấp hơn, cây quyết định không thể ngoại suy vượt qua trần giá trị trung bình của lá, tạo ra hiệu ứng "nén đuôi" (Tail Compression).
+* **Định hướng cải tiến kỹ thuật:**
+  * Giải pháp tiếp theo là chuyển đổi hàm mục tiêu sang **Asymmetric Loss / Pinball Loss (Quantile Regression $\tau = 0.90$)** hoặc áp dụng kỹ thuật cân bằng mẫu Focal Loss / Sample Weighting cho các sự kiện khói cực đoan để đẩy hệ số góc $\beta$ tiệm cận 1.0.
+
+---
+
+### ❓ CÂU HỎI 11: VỀ HAI ĐIỂM GIÁN ĐOẠN VỌT NHỌN SAI SỐ TẠI MỐC 11H VÀ 23H TRONG BIỂU ĐỒ DIURNAL ERROR (EDA)
+> **Giảng viên hỏi:** *"Trong biểu đồ phân tích sai số theo chu kỳ giờ trong ngày (Diurnal Hourly Error Profile), tại sao ở kịch bản 1h nowcasting lại xuất hiện 2 điểm vọt nhọn bất thường tại mốc 11h và 23h, trong khi kịch bản 24h lại biến thiên trơn láng?"*
+
+#### 🛡️ CƠ SỞ PHẢN BIỆN DỰA TRÊN DỮ LIỆU & LÝ THUYẾT:
+* **Kết quả kiểm toán mã nguồn và nguồn gốc dữ liệu (Code Audit & Provenance Verification):**
+  * Nhóm đã rà soát chi tiết pipeline trích xuất dữ liệu từ Open-Meteo Air Quality API. Nguồn dữ liệu này được nội suy từ mô hình hoàn lưu khí quyển toàn cầu CAMS (Copernicus Atmosphere Monitoring Service) và mô hình số trị NOAA HRRR/GFS.
+  * Các hệ thống mô hình số trị toàn cầu thực hiện **Chu kỳ đồng hóa dữ liệu (Data Assimilation Cycle)** hai lần mỗi ngày vào các mốc chuẩn quốc tế: **00:00 UTC** và **12:00 UTC**.
+  * Tại hai mốc thời gian này, dữ liệu thám không và vệ tinh thực tế được bơm vào mô hình số trị để tái thiết lập trạng thái khí quyển ban đầu. Quá trình này tạo ra một **bước nhảy phân tích (Analysis Increments)** đột ngột trong chuỗi thời gian khí tượng gốc, phá vỡ tính liên tục trơn láng của mô hình dự báo thời tiết trước đó.
+* **Cơ chế lan truyền vào mô hình máy học:**
+  * Khi thiết lập biến mục tiêu 1h nowcasting bằng phép dịch chuyển một bước thời gian (`target = shift(-1)` trong giờ UTC), cú sốc đồng hóa tại 00:00 UTC và 12:00 UTC tác động trực tiếp vào cặp đặc trưng - nhãn tại các bước liền kề.
+  * Khi chuyển đổi về múi giờ địa phương California (Pacific Time - PST/PDT), các mốc đồng hóa kết hợp với chu kỳ cập nhật dữ liệu cảm biến EPA tạo thành hai điểm gãy gián đoạn tại khung giờ 11:00 và 23:00.
+* **Ý nghĩa học thuật:** Đây là bằng chứng thực nghiệm rõ ràng về **Nhiễu đồng hóa số trị ngoại sinh (Exogenous Data Assimilation Shock)** trong dữ liệu tác nghiệp thực tế, không phải do mô hình bị suy thoái hay quá khớp (overfitting). Ở kịch bản 24h, do chu kỳ dự báo kéo dài trọn vẹn 1 ngày đêm, hiệu ứng gián đoạn bước nhảy cục bộ này được tích phân trơn láng theo chu kỳ bức xạ mặt trời.
+
+---
+
+### ❓ CÂU HỎI 12: VỀ TÍNH DỊ BIỆT KHÔNG GIAN VÀ KHẢ NĂNG CHỐNG CHỊU GIỮA CÁC LƯU VỰC ĐỊA HÌNH (SLIDE 11 & EDA)
+> **Giảng viên hỏi:** *"Tại sao sai số mô hình lại phân hóa rõ rệt giữa 3 vùng đô thị: San Jose đạt MAE tốt nhất (9.9), Fresno/San Joaquin đạt 10.9, còn Los Angeles lại có MAE cao nhất (13.1) và tập trung nhiều sự kiện khói cực đoan nhất?"*
+
+#### 🛡️ CƠ SỞ PHẢN BIỆN DỰA TRÊN DỮ LIỆU & LÝ THUYẾT:
+* **Tác động của Địa hình lưu vực và Thông gió hàng hải (Topographic Basin & Marine Ventilation):**
+  * **San Jose (Vùng Vịnh San Francisco - MAE = 9.9):** Nằm ven vịnh Thái Bình Dương, được hưởng lợi trực tiếp từ tầng nghịch nhiệt biển (Marine Layer) và gió mậu dịch đại dương thổi liên tục qua eo biển Golden Gate. Khí quyển tại đây được thông gió và làm sạch nhanh chóng, chu kỳ ô nhiễm ổn định và ít tích tụ khói bụi kéo dài.
+  * **Fresno / Bakersfield (Thung lũng San Joaquin - MAE = 10.9):** Đây là một lòng chảo nông nghiệp khép kín bị chặn bởi dãy núi Sierra Nevada ở phía đông và Dãy Duyên hải ở phía tây. Vào mùa đông, lớp nghịch nhiệt bức xạ bề mặt giữ chặt các sol khí và bụi mịn dưới đáy thung lũng, gây ra tình trạng ô nhiễm nền cao và ứ đọng kéo dài nhiều ngày.
+  * **Los Angeles (Lưu vực Nam California - South Coast Air Basin - MAE = 13.1):** Là lưu vực phức tạp nhất:
+    * Bị bao vây ba phía bởi dãy núi San Gabriel và San Bernardino cao trên 3000m, tạo bẫy nhốt khói bụi giao thông và công nghiệp dày đặc.
+    * Chịu ảnh hưởng trực tiếp từ các đợt gió sa mạc Santa Ana khô nóng thổi từ cao nguyên Great Basin qua các hẻm núi, thổi bùng các vụ cháy rừng từ sườn núi phía đông và đẩy khói thẳng vào vùng đô thị ven biển.
+* **Mức độ phức tạp của dữ liệu huấn luyện:**
+  * Thống kê trên tập kiểm thử cho thấy Los Angeles có tới **231 sự kiện cực đoan ($AQI > 150$)**, trong khi San Jose chỉ ghi nhận **24 sự kiện** (chênh lệch gần 10 lần).
+  * Khi xảy ra sốc khói cực đoan ($AQI > 150$), MAE tại Los Angeles tăng vọt lên **66.8**, tại San Joaquin là **54.2**, và tại San Jose là **51.6**. Sự chênh lệch sai số phản ánh chính xác độ phức tạp vật lý và mức độ dị biệt vi khí hậu giữa các lưu vực địa hình.
+
+---
+
+### ❓ CÂU HỎI 13: TẠI SAO KHÔNG DÙNG CÁC PHƯƠNG PHÁP THỐNG KÊ (IQR, Z-SCORE) ĐỂ LOẠI BỎ NGOẠI LỆ (OUTLIERS) TRONG TẬP DỮ LIỆU?
+> **Giảng viên hỏi:** *"Trong dữ liệu AQI, giá trị cực đại lên tới hơn 400 AQI trong khi trung vị chỉ là 35–45 AQI. Tại sao nhóm không loại bỏ các điểm dị biệt (outliers) này để làm sạch phân phối dữ liệu?"*
+
+#### 🛡️ CƠ SỞ PHẢN BIỆN DỰA TRÊN DỮ LIỆU & LÝ THUYẾT:
+* **Phân biệt rạch ròi giữa Dị biệt lỗi đo (Artifact) và Biến cố vật lý tự nhiên (True Extreme Physical Events):**
+  * Dữ liệu quan trắc được lấy từ hệ thống trạm đạt tiêu chuẩn FRM/FEM (Federal Reference Method / Federal Equivalent Method) của US EPA, trải qua quy trình kiểm chuẩn nghiêm ngặt và kiểm tra sai số thiết bị.
+  * Các mốc giá trị $AQI > 200, 300$ trong dữ liệu không phải lỗi nhảy số của cảm biến, mà trùng khớp tuyệt đối với các thảm họa cháy rừng lịch sử tại California (điển hình như vụ cháy Park Fire tháng 7–8/2024 tại Butte County thiêu rụi hơn 429.000 mẫu Anh).
+* **Mục tiêu sứ mệnh của Hệ thống Cảnh báo Sớm (Operational Mission):**
+  * Mục tiêu quan trọng nhất của một hệ thống dự báo chất lượng không khí tác nghiệp là **bảo vệ tính mạng và sức khỏe cộng đồng** trước các biến cố thiên tai thảm khốc.
+  * Nếu áp dụng máy móc quy tắc thống kê IQR (loại bỏ các giá trị $Q_3 + 1.5 \times \text{IQR} \approx 85\text{ AQI}$) hoặc Z-Score $> 3$, ta sẽ triệt tiêu toàn bộ các đợt bão khói nguy hiểm chết người khỏi tập huấn luyện.
+  * Mô hình khi đó chỉ học cách dự báo những ngày trời trong xanh, và sẽ "mù hoàn toàn" khi cháy rừng ập đến trong thực tế.
+* **Bảo toàn tính kiên cường của mô hình:** Nhóm giữ nguyên 100% các giá trị vật lý cực đoan này để kiểm định năng lực chống chịu thực tế của mô hình dưới các cú sốc thiên tai bất thường.
+
+---
+
+### ❓ CÂU HỎI 14: VỀ GIÁ TRỊ TÁC NGHIỆP CỦA MACHINE LEARNING SO VỚI CÁC MÔ HÌNH CƠ SỞ NGÂY THƠ (PERSISTENCE & CLIMATOLOGY)
+> **Giảng viên hỏi:** *"Tại sao cần so sánh mô hình với Persistence ($y_{t+h} = y_t$) và Climatology (Trung bình chu kỳ lịch sử)? Machine Learning chứng minh giá trị vượt trội ở đâu?"*
+
+#### 🛡️ CƠ SỞ PHẢN BIỆN DỰA TRÊN DỮ LIỆU & LÝ THUYẾT:
+* **Tiêu chuẩn học thuật quốc tế trong dự báo khí tượng:**
+  * Trong khoa học khí quyển (WMO, AMS), một mô hình máy học chỉ được công nhận có giá trị dự báo thực chất (*forecast skill*) nếu nó đánh bại được các baseline vật lý ngây thơ (*naive physical baselines*).
+* **Ở Chân trời 1 giờ (Nowcasting - Slide 08):**
+  * Do quán tính khí quyển ngắn hạn rất lớn, mô hình quán tính Persistence đạt $R^2 = 0.941$ và $\text{MAE} = 4.41$.
+  * Tuy nhiên, Persistence luôn bị trễ pha một bước: Khi khói cháy rừng vừa ập vào trạm (nồng độ tăng vọt từ 40 lên 180 AQI trong 1 giờ), Persistence vẫn dự báo 40, tạo ra sai số cục bộ lên tới 140 đơn vị AQI.
+  * LightGBM khai thác biến vi sai `diff_1h` và vi khí hậu để giảm MAE xuống **3.65** (giảm **17.2% sai số** so với Persistence) và đạt $R^2 = 0.956$, phản ứng nhanh nhạy ngay tại thời điểm bắt đầu cú sốc.
+* **Ở Chân trời 24 giờ (Day-Ahead - Slide 10):**
+  * Quán tính khí quyển sụp đổ hoàn toàn: Persistence chỉ đạt $R^2 = 0.176$ ($\text{MAE} = 17.06$), gần như mất toàn bộ năng lực dự báo.
+  * Climatology (chu kỳ trung bình theo giờ và mùa) đạt $R^2 = 0.287$ ($\text{MAE} = 15.65$), chỉ nắm bắt được chu kỳ ngày đêm thông thường nhưng hoàn toàn bất lực trước cháy rừng hay các đợt nghịch nhiệt bất thường.
+  * LightGBM đạt $R^2 = 0.617$ ($\text{MAE} = 11.33$), **vượt trội hơn Persistence gấp 3.5 lần về hệ số giải thích $R^2$** và **giảm 33.6% sai số tuyệt đối MAE**.
+  * Kết quả này chứng minh thuật toán GBDT thực sự trích xuất được tri thức khí tượng phi tuyến từ trường gió và nhiệt độ tương lai chứ không hề dựa dẫm vào quán tính chu kỳ lặp lại.
+
+---
+
+### ❓ CÂU HỎI 15: VỀ Ý NGHĨA VẬT LÝ VÀ ĐỘNG LỰC HỌC CỦA ĐẶC TRƯNG VI SAI ĐẠO HÀM BẬC MỘT (`diff_1h`)
+> **Giảng viên hỏi:** *"Biến `diff_1h` được tính toán như thế nào và có ý nghĩa vật lý gì trong bài toán dự báo 1 giờ? Tại sao nó lại là một trong những biến quan trọng nhất theo phân tích SHAP?"*
+
+#### 🛡️ CƠ SỞ PHẢN BIỆN DỰA TRÊN DỮ LIỆU & LÝ THUYẾT:
+* **Công thức toán học và Bản chất động lực:**
+  $$\text{diff\_1h}_t = y_t - y_{t-1} \approx \frac{\partial y}{\partial t} \Delta t$$
+  * Đây là xấp xỉ sai phân hữu hạn (finite difference) của đạo hàm bậc một theo thời gian, đại diện cho **Vận tốc / Gia tốc tích tụ hoặc khuếch tán khói bụi** tại trạm quan trắc mặt đất.
+* **Ý nghĩa vật lý trong cơ chế phân nhánh của cây quyết định:**
+  * **Trường hợp bùng phát luồng khói ($\text{diff\_1h} \gg 0$):** Khi một luồng khói đậm đặc từ đám cháy rừng bị gió cuốn tới trạm, nồng độ nhảy vọt trong 60 phút vừa qua (ví dụ tăng $+60\text{ AQI/h}$). Giá trị vi sai dương lớn kích hoạt các nhánh cây quyết định dự báo gia tốc tăng tiếp ở $t+1$, giúp mô hình hóa giải hiện tượng trễ pha (phase lag) mà các mô hình hồi quy trễ thông thường hay mắc phải.
+  * **Trường hợp thông gió làm sạch khí quyển ($\text{diff\_1h} \ll 0$):** Khi một luồng không khí biển lạnh tràn vào làm loãng không khí ô nhiễm, tốc độ sụt giảm âm sâu giúp mô hình lập tức hạ mức dự báo ở giờ kế tiếp mà không cần chờ chuỗi giá trị trung bình trượt dài hạn (rolling mean) thích ứng chậm chạp.
+* **Đóng góp định lượng SHAP:** Trong kịch bản 1h nowcasting, `diff_1h` đóng góp trung bình **$1.29\text{ điểm AQI}$**, xếp thứ 4 trong số toàn bộ các biến đầu vào, chứng minh tầm quan trọng cốt lõi của thông tin động học (kinetic momentum) trong bài toán quan trắc cận thực.
