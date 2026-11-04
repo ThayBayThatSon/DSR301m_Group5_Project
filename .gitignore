@@ -1,30 +1,20 @@
 # =========================================================================
-# Git Ignore Configuration for Machine Learning Project
+# Git Ignore Configuration for California AQI Machine Learning Project
 # =========================================================================
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
 
 # Distribution / packaging
-.Python
 build/
 develop-eggs/
 dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
@@ -50,12 +40,28 @@ tmp/
 *.log
 *.tmp
 
-# Trained model binaries (reproducible via scripts/execute_all_notebooks.py)
+# Trained model binaries (Weights > 100MB and PyTorch binaries)
 *.joblib
 *.pkl
+*.pt
+*.pth
+*.onnx
 artifacts/models/*.joblib
 artifacts/models/*.pkl
+artifacts/models/*.pt
 !artifacts/models/.gitkeep
+
+# Local App Databases & Large runtime caches
+data/*.db
+data/*.sqlite3
+data/openmeteo_latest_2026.csv
+data/california_aqi_model_ready_extended_2026.csv
+data/app_predictions_*.parquet
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Operating System specific
 .DS_Store
