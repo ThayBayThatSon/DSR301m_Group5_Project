@@ -1,6 +1,6 @@
 """
 execute_all_notebooks.py
-Tự động chạy toàn bộ 6 notebook với kernel python3 và lưu trực tiếp kết quả (outputs, tables, plots) vào các file .ipynb.
+Tự động chạy toàn bộ các notebook với kernel python3 và lưu trực tiếp kết quả (outputs, tables, plots) vào các file .ipynb.
 """
 
 import sys
@@ -21,6 +21,7 @@ notebooks = [
     "notebooks/03_Tree_Ensembles_RF.ipynb",
     "notebooks/04_Gradient_Boosting_SOTA.ipynb",
     "notebooks/05_Neural_Network_MLP.ipynb",
+    "notebooks/05b_Recurrent_Neural_Network_LSTM.ipynb",
     "notebooks/06_Benchmark_Leaderboard_Synthesis.ipynb"
 ]
 
@@ -42,4 +43,4 @@ for nb_name in notebooks:
         print(f"❌ Lỗi khi thực thi {nb_name}: {e}")
         break
 
-print("\n🎉 Tất cả 6 notebooks đã được chạy và lưu output hoàn chỉnh!")
+print("\n🎉 Tất cả 7 notebooks đã được chạy và lưu output hoàn chỉnh!")
