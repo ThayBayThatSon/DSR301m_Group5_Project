@@ -40,16 +40,11 @@ tmp/
 *.log
 *.tmp
 
-# Trained model binaries (Weights > 100MB and PyTorch binaries)
-*.joblib
+# Trained model binaries (Allow tracked models in artifacts/models/)
 *.pkl
-*.pt
 *.pth
 *.onnx
-artifacts/models/*.joblib
-artifacts/models/*.pkl
-artifacts/models/*.pt
-!artifacts/models/.gitkeep
+!artifacts/models/*
 
 # Local App Databases & Large runtime caches
 data/*.db
