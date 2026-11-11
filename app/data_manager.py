@@ -251,14 +251,131 @@ class AQIDataManager:
         self._precompute_diurnal_heatmaps()
 
     def reload_precomputed_stores(self):
+        """
+        Kiểm tra giờ mới nhất trong dataset.
+        Nếu thiếu giờ so với thời điểm hiện tại, tự động gọi Open-Meteo tải bù và tái tạo Parquet cache.
+        Nếu đã đủ, nạp lại kho vào RAM và trả về xác nhận.
+        """
+        now_dt = datetime.now()
+        now_date_str = now_dt.strftime("%Y-%m-%d")
+
+        ext_csv = os.path.join(self.data_dir, "california_aqi_model_ready_extended_2026.csv")
+        if not os.path.exists(ext_csv):
+            self.load_precomputed_stores()
+            return {
+                "status": "success",
+                "message": "Đã tải lại kho dữ liệu thành công.",
+                "total_records_1h": len(self.df_1h) if self.df_1h is not None else 0,
+                "total_records_24h": len(self.df_24h) if self.df_24h is not None else 0,
+            }
+
+        df_orig = pd.read_csv(ext_csv)
+        om_stations = ["FRES_OPENMETEO", "LA_OPENMETEO", "SJ_OPENMETEO"]
+        sub_om = df_orig[df_orig["station_id"].isin(om_stations)]
+        max_time_str = str(sub_om["time"].max())
+        max_dt = pd.to_datetime(max_time_str)
+
+        target_end_str = now_date_str
+        target_end_dt = pd.to_datetime(f"{target_end_str} 23:00:00")
+
+        fetched_count = 0
+        if max_dt < target_end_dt:
+            start_str = max_dt.strftime("%Y-%m-%d")
+            station_cfg = [
+                {"id": "FRES_OPENMETEO", "name": "Fresno - Open-Meteo", "lat": 36.7, "lon": -119.8},
+                {"id": "LA_OPENMETEO", "name": "Los Angeles - Open-Meteo", "lat": 34.1, "lon": -118.2},
+                {"id": "SJ_OPENMETEO", "name": "Downtown San Jose, California", "lat": 37.3, "lon": -121.9},
+            ]
+            new_dfs = []
+            import sys
+            import subprocess
+
+            for st in station_cfg:
+                try:
+                    url_aq = (
+                        f"https://air-quality-api.open-meteo.com/v1/air-quality?latitude={st['lat']}&longitude={st['lon']}"
+                        f"&hourly=pm2_5,pm10&start_date={start_str}&end_date={target_end_str}&timezone=America%2FLos_Angeles"
+                    )
+                    req_aq = urllib.request.Request(url_aq, headers={"User-Agent": "Mozilla/5.0"})
+                    with urllib.request.urlopen(req_aq, timeout=15) as resp_aq:
+                        data_aq = json.loads(resp_aq.read().decode("utf-8"))
+                    df_aq = pd.DataFrame(data_aq["hourly"]).rename(columns={"pm2_5": "pm25_ug_m3", "pm10": "pm10_ug_m3"})
+
+                    url_w = (
+                        f"https://api.open-meteo.com/v1/forecast?latitude={st['lat']}&longitude={st['lon']}"
+                        f"&hourly=temperature_2m,relative_humidity_2m,rain,cloud_cover,wind_speed_10m,wind_direction_10m,surface_pressure"
+                        f"&past_days=7&forecast_days=2&timezone=America%2FLos_Angeles"
+                    )
+                    req_w = urllib.request.Request(url_w, headers={"User-Agent": "Mozilla/5.0"})
+                    with urllib.request.urlopen(req_w, timeout=15) as resp_w:
+                        data_w = json.loads(resp_w.read().decode("utf-8"))
+                    df_w = pd.DataFrame(data_w["hourly"])
+                    df_w = df_w[(df_w["time"] >= f"{start_str}T00:00") & (df_w["time"] <= f"{target_end_str}T23:00")].copy()
+
+                    merged = pd.merge(df_aq, df_w, on="time", how="inner")
+                    merged["time"] = pd.to_datetime(merged["time"])
+                    merged["source"] = "openmeteo"
+                    merged["station_id"] = st["id"]
+                    merged["station_name"] = st["name"]
+                    merged["lat"] = st["lat"]
+                    merged["lon"] = st["lon"]
+                    merged["target_type"] = "pm25_proxy"
+                    merged["target_aqi"] = merged["pm25_ug_m3"].apply(pm25_to_epa_aqi)
+                    merged["hour"] = merged["time"].dt.hour
+                    merged["dayofweek"] = merged["time"].dt.dayofweek
+                    merged["month"] = merged["time"].dt.month
+                    merged["year"] = merged["time"].dt.year
+
+                    cols_order = [
+                        "time", "source", "station_id", "station_name", "lat", "lon",
+                        "pm25_ug_m3", "pm10_ug_m3", "target_aqi", "target_type",
+                        "temperature_2m", "relative_humidity_2m", "rain", "cloud_cover",
+                        "wind_speed_10m", "wind_direction_10m", "surface_pressure",
+                        "hour", "dayofweek", "month", "year",
+                    ]
+                    merged = merged[cols_order]
+                    merged["time"] = merged["time"].dt.strftime("%Y-%m-%d %H:%M:%S")
+                    new_dfs.append(merged)
+                    time.sleep(0.5)
+                except Exception as ex:
+                    print(f"[Sync] Warning fetching for {st['id']}: {ex}")
+
+            if new_dfs:
+                combined_new = pd.concat(new_dfs, ignore_index=True)
+                existing_keys = set(df_orig["station_id"] + "_" + df_orig["time"])
+                to_add = combined_new[~(combined_new["station_id"] + "_" + combined_new["time"]).isin(existing_keys)]
+                if len(to_add) > 0:
+                    df_merged_all = (
+                        pd.concat([df_orig, to_add], ignore_index=True)
+                        .sort_values(["station_id", "time"])
+                        .reset_index(drop=True)
+                    )
+                    df_merged_all.to_csv(ext_csv, index=False)
+                    fetched_count = len(to_add)
+                    try:
+                        subprocess.run(
+                            [sys.executable, "scratch/archive/build_app_parquet_cache.py"], check=True, timeout=60
+                        )
+                    except Exception as e_pq:
+                        print(f"[Sync] Error rebuilding parquet cache: {e_pq}")
+
+        # Tái nạp dữ liệu vào bộ nhớ
         self.load_precomputed_stores()
+
+        msg = (
+            f"Đã phát hiện và tải thêm {fetched_count} giờ khuyết mới nhất từ Open-Meteo, đồng bộ hoàn tất vào kho dự báo."
+            if fetched_count > 0
+            else f"Kho dữ liệu đã được cập nhật đầy đủ và liên tục đến {max_time_str} (0 khoảng khuyết)."
+        )
         return {
             "status": "success",
-            "message": "Đã tải lại toàn bộ kho dữ liệu và đồng bộ các ngày khuyết thành công.",
+            "message": msg,
+            "new_hours_fetched": fetched_count,
             "total_records_1h": len(self.df_1h),
             "total_records_24h": len(self.df_24h),
             "min_date": str(self.df_1h["date"].min()),
             "max_date": str(self.df_1h["date"].max()),
+            "latest_timestamp": max_time_str,
             "stations": list(self.df_1h["station_id"].unique()),
         }
 

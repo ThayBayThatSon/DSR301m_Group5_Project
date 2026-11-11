@@ -2096,7 +2096,7 @@ async function reloadMissingDates() {
     const json = await res.json();
     console.log("Đồng bộ ngày khuyết:", json);
     await loadDashboardWindow();
-    alert(`Đã đồng bộ thành công các ngày khuyết!\nKho dữ liệu đã nạp đầy đủ đến: ${json.max_date || "mới nhất"}\nTổng số bản ghi: ${json.total_records_1h ? json.total_records_1h.toLocaleString() : "--"} dòng.`);
+    alert(`[Đồng bộ dữ liệu]\n${json.message}\nTổng bản ghi kho dự báo: ${json.total_records_1h ? json.total_records_1h.toLocaleString() : "--"} dòng.`);
   } catch (err) {
     console.error("Lỗi khi tải lại ngày khuyết:", err);
     alert("Không thể tải lại ngày khuyết. Vui lòng kiểm tra kết nối mạng.");
