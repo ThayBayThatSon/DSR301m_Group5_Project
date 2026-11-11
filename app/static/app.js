@@ -39,7 +39,7 @@ const APP_STATE = {
   syslogOpen: false,
   win2: {
     scenario: "1h",
-    activePresetId: "latest_day",
+    activePresetId: "latest_today",
     startDate: "",
     endDate: "",
     sourceMode: "seamless",
@@ -427,6 +427,7 @@ function switchWindow(winId) {
       if (APP_STATE.charts.shap) APP_STATE.charts.shap.resize();
     });
   } else if (winId === "win2") {
+    renderWildfirePresetButtons();
     if (!APP_STATE.win2.dashboardData) {
       loadDashboardWindow();
     } else {
@@ -2058,7 +2059,16 @@ function renderWildfirePresetButtons() {
   container.innerHTML = APP_STATE.meta.wildfire_presets
     .map((p) => {
       const isAct = p.id === APP_STATE.win2.activePresetId;
-      return `<button id="preset-btn-${p.id}" onclick="selectWildfirePreset('${p.id}')" class="chip ${isAct ? "is-active" : ""}" title="${(p.description || "").replace(/"/g, "&quot;")}">${p.title}</button>`;
+      const badgeHtml = p.badge
+        ? `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[9.5px] font-mono ${
+            isAct
+              ? "bg-blue-600 text-white"
+              : "bg-slate-800 text-slate-400 border border-slate-700"
+          }">${p.badge}</span>`
+        : "";
+      return `<button id="preset-btn-${p.id}" onclick="selectWildfirePreset('${p.id}')" class="chip ${
+        isAct ? "is-active" : ""
+      }" title="${(p.description || "").replace(/"/g, "&quot;")}">${p.title}${badgeHtml}</button>`;
     })
     .join("");
 }
@@ -2079,7 +2089,9 @@ function selectWildfirePreset(presetId) {
 
   byId("win2-start-date").value = preset.start_date || "";
   byId("win2-end-date").value = preset.end_date || "";
-  byId("win2-source-mode").value = preset.recommended_source_mode || "seamless";
+  byId("win2-source-mode").value = preset.source_mode || preset.recommended_source_mode || "seamless";
+  const regSel = byId("lb-region-filter");
+  if (regSel) regSel.value = "ALL";
 
   loadDashboardWindow();
 }
@@ -2338,9 +2350,31 @@ function renderAllStationWindowCharts() {
     ch.resize();
 
     if (stObj.empty || !stObj.timestamps || stObj.timestamps.length === 0) {
-      metaEl.textContent = "No records match the filter criteria.";
-      badgesEl.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-500">0 records</span>`;
+      if (rk === "SJ") {
+        metaEl.textContent = "Open-Meteo coverage starts 2023. Historical 2018–2022 monitored via Fresno & LA.";
+        badgesEl.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-amber-950/60 border border-amber-800 text-amber-300 text-[10px] font-mono">Active 2023–2026</span>`;
+      } else {
+        metaEl.textContent = "No records match the filter criteria.";
+        badgesEl.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-500">0 records</span>`;
+      }
       ch.clear();
+      ch.setOption({
+        graphic: {
+          type: "text",
+          left: "center",
+          top: "middle",
+          style: {
+            text: rk === "SJ"
+              ? "San Jose (Bay Area) joined dataset in 2023 via Open-Meteo atmospheric analysis.\nThis historical event was recorded by Fresno & Los Angeles EPA ground stations."
+              : "No records found for this station in the selected time window.",
+            textAlign: "center",
+            fill: tc.subText,
+            fontSize: 12,
+            lineHeight: 18,
+            fontFamily: "Inter, sans-serif"
+          }
+        }
+      });
       return;
     }
 

@@ -87,16 +87,16 @@ WILDFIRE_PRESETS = [
     {
         "id": "latest_today",
         "title": "Latest Observation (24h)",
-        "badge": "Default",
+        "badge": "All 3 Basins",
         "start_date": "2026-11-10",
         "end_date": "2026-11-11",
         "source_mode": "seamless",
-        "description": "Compare 10 model predictions against observations in the latest observation period across all 3 stations.",
+        "description": "Compare 10 model predictions against observations in the latest observation period across all 3 stations (Fresno, LA, San Jose).",
     },
     {
         "id": "latest_7d",
         "title": "Recent 7 Days (11/2026)",
-        "badge": "Recent 7D",
+        "badge": "All 3 Basins",
         "start_date": "2026-11-04",
         "end_date": "2026-11-11",
         "source_mode": "seamless",
@@ -105,7 +105,7 @@ WILDFIRE_PRESETS = [
     {
         "id": "palisades_eaton_2025",
         "title": "Palisades & Eaton Fires (01/2025)",
-        "badge": "Peak 312 AQI",
+        "badge": "Peak 312 · All 3",
         "start_date": "2025-01-07",
         "end_date": "2025-01-14",
         "source_mode": "seamless",
@@ -114,7 +114,7 @@ WILDFIRE_PRESETS = [
     {
         "id": "july_smoke_2024",
         "title": "Summer Heatwave & Smoke (07/2024)",
-        "badge": "Peak 387 AQI",
+        "badge": "Peak 387 · All 3",
         "start_date": "2024-07-03",
         "end_date": "2024-07-10",
         "source_mode": "seamless",
@@ -123,44 +123,44 @@ WILDFIRE_PRESETS = [
     {
         "id": "dual_source_overlap_2023",
         "title": "Dual-Source Overlap: EPA vs Open-Meteo (07/2023)",
-        "badge": "Dual-Source",
+        "badge": "Dual-Source · All 3",
         "start_date": "2023-07-02",
         "end_date": "2023-07-09",
         "source_mode": "both_compare",
-        "description": "Direct cross-comparison between EPA surface stations (FRES, LA) and Open-Meteo atmospheric analysis.",
+        "description": "Direct cross-comparison between EPA surface stations (FRES, LA) and Open-Meteo atmospheric analysis across all 3 regions.",
     },
     {
         "id": "knp_windy_2021",
         "title": "KNP Complex & Windy Fire (10/2021)",
-        "badge": "Peak 222 AQI",
+        "badge": "Fresno & LA",
         "start_date": "2021-09-28",
         "end_date": "2021-10-05",
         "source_mode": "seamless",
-        "description": "Wildfire smoke from Sequoia National Forest trapped in the San Joaquin Valley basin (Fresno).",
+        "description": "Wildfire smoke trapped in the San Joaquin Valley basin. Recorded at Fresno & Los Angeles EPA ground stations (San Jose joined dataset in 2023 via Open-Meteo).",
     },
     {
         "id": "creek_august_2020",
         "title": "Creek Fire — San Joaquin Valley (09/2020)",
-        "badge": "Peak 390 AQI",
+        "badge": "Peak 390 · Fresno & LA",
         "start_date": "2020-09-10",
         "end_date": "2020-09-18",
         "source_mode": "seamless",
-        "description": "Large-scale wildfire in Sierra National Forest causing AQI at Fresno to exceed 389.8 for multiple days.",
+        "description": "Large-scale wildfire in Sierra National Forest causing AQI at Fresno to exceed 389.8 for multiple days (Monitored at Fresno & LA EPA stations).",
     },
     {
         "id": "camp_fire_2018",
         "title": "Camp Fire & Woolsey Fire (11/2018)",
-        "badge": "Peak 189 AQI",
+        "badge": "Peak 189 · Fresno & LA",
         "start_date": "2018-11-15",
         "end_date": "2018-11-22",
         "source_mode": "seamless",
-        "description": "Camp Fire in November 2018 causing widespread air pollution across Northern and Central California valleys.",
+        "description": "Historic California wildfire causing widespread valley smoke. Recorded by Fresno & Los Angeles EPA stations (San Jose joined dataset in 2023).",
     },
 ]
 
 MODEL_COLUMNS = [
     ("pred_wildfire_layer", "Wildfire Specialist (2-Stage)", "Extreme Adaptation", "#dc2626"),
-    ("pred_voting_ensemble", "Voting Ensemble (Top 3)", "Ensemble", "#059669"),
+    ("pred_voting_ensemble", "Voting Ensemble", "Ensemble", "#059669"),
     ("pred_lstm", "LSTM (PyTorch)", "Neural Network", "#7c3aed"),
     ("pred_lightgbm", "LightGBM", "Gradient Boosting", "#2563eb"),
     ("pred_xgboost", "XGBoost", "Gradient Boosting", "#0284c7"),
@@ -774,10 +774,18 @@ class AQIDataManager:
                     "region_key": rk,
                     "title": r_title,
                     "empty": True,
+                    "record_count": 0,
+                    "mean_aqi": 0.0,
+                    "max_aqi": 0.0,
                     "active_sources": [],
                     "timestamps": [],
                     "actual": [],
                     "models": {},
+                    "note": (
+                        "Open-Meteo coverage begins in 2023. EPA ground station was not present in Bay Area prior to 2023."
+                        if rk == "SJ"
+                        else "No observations match the selected criteria for this time window."
+                    ),
                 }
                 continue
 
