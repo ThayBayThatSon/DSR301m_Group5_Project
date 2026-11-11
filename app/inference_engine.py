@@ -341,10 +341,11 @@ class MultiModelInferenceEngine:
             "top_features": contributions[:top_k],
         }
 
-    def forecast_next_24_hours(self, df_station_recent, station_str, weather_overrides=None):
+    def forecast_next_24_hours(self, df_station_recent, station_str, weather_overrides=None, wildfire_mode=False):
         """
         df_station_recent: DataFrame sorted by time ascending, containing past 72h up to current_hour + 24h forecast weather from Open-Meteo.
         weather_overrides: optional dict for What-If simulator {'temperature_2m': ..., 'relative_humidity_2m': ..., 'wind_speed_10m': ..., 'rain': ...}
+        wildfire_mode: boolean flag to simulate severe California wildfire plume conditions (Camp Fire / Palisades event).
         """
         df_w = df_station_recent.copy().sort_values("time").reset_index(drop=True)
         df_w["time"] = pd.to_datetime(df_w["time"])
@@ -356,8 +357,17 @@ class MultiModelInferenceEngine:
             if hist_indices:
                 now_idx = hist_indices[-1]
 
-        # Apply What-If overrides to current and future rows if provided
-        if weather_overrides:
+        # Apply Wildfire smoke plume & weather overrides if active
+        if wildfire_mode:
+            df_w.loc[now_idx:, "temperature_2m"] = 34.0
+            df_w.loc[now_idx:, "relative_humidity_2m"] = 14.0
+            df_w.loc[now_idx:, "wind_speed_10m"] = 38.0
+            df_w.loc[now_idx:, "rain"] = 0.0
+            df_w.loc[now_idx, "target_aqi"] = 312.0
+            df_w.loc[now_idx, "pm25_ug_m3"] = 262.0
+            if "subindex_pm25" in df_w.columns:
+                df_w.loc[now_idx, "subindex_pm25"] = 312.0
+        elif weather_overrides:
             for k, v in weather_overrides.items():
                 if v is not None and k in df_w.columns:
                     df_w.loc[now_idx:, k] = float(v)
@@ -470,6 +480,10 @@ class MultiModelInferenceEngine:
             if step_h == 24:
                 step_preds = preds_24h_direct
 
+            if wildfire_mode:
+                for m_k in step_preds:
+                    step_preds[m_k] = round(max(float(step_preds[m_k]), 285.0 + 28.0 * np.sin((step_h + 2) / 3.8)), 1)
+
             if step_h in [1, 2, 3, 24]:
                 horizons_summary[f"+{step_h}h"] = {
                     "horizon": f"+{step_h}h",
@@ -536,12 +550,16 @@ class MultiModelInferenceEngine:
         sub_o3 = round(float(curr_row.get("subindex_ozone", 35.0)), 1)
         o3_conc = round(float(curr_row.get("ozone_ug_m3", 40.0)), 1)
 
-        pollutant_candidates = [
-            ("pm25", "Bụi mịn PM2.5", sub_pm25),
-            ("pm10", "Bụi thô PM10", sub_pm10),
-            ("ozone", "Khí Ozone (O₃)", sub_o3),
-        ]
-        dom_key, dom_name, dom_sub = max(pollutant_candidates, key=lambda x: x[2])
+        if wildfire_mode:
+            sub_pm25 = 312.0
+            dom_key, dom_name, dom_sub = ("pm25", "Khói bụi cháy rừng (PM2.5)", 312.0)
+        else:
+            pollutant_candidates = [
+                ("pm25", "Bụi mịn PM2.5", sub_pm25),
+                ("pm10", "Bụi thô PM10", sub_pm10),
+                ("ozone", "Khí Ozone (O₃)", sub_o3),
+            ]
+            dom_key, dom_name, dom_sub = max(pollutant_candidates, key=lambda x: x[2])
 
         return {
             "current": {

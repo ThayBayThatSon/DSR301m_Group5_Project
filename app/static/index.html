@@ -20,6 +20,32 @@
 <body class="antialiased selection:bg-slate-700 selection:text-white">
 
   <!-- ===================================================================== -->
+  <!-- EMERGENCY WILDFIRE ALERT BANNER (TOP HEADER NOTIFICATION)             -->
+  <!-- ===================================================================== -->
+  <aside id="wildfire-alert-banner" class="hidden fixed top-0 inset-x-0 z-[60] bg-rose-950/95 border-b-2 border-rose-500 shadow-2xl backdrop-blur-md text-white transition-all duration-300" aria-label="Cảnh báo khẩn cấp cháy rừng">
+    <div class="max-w-[1680px] mx-auto px-4 py-2 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="flex h-7 w-7 items-center justify-center rounded-full bg-rose-600 text-white animate-pulse shrink-0 text-sm shadow-md">🔥</span>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-900 border border-rose-500 text-rose-200 uppercase tracking-wider">Cảnh Báo Khẩn Cấp: Hazardous (&gt;300 AQI)</span>
+            <span class="text-[12px] font-bold text-rose-100 hidden sm:inline">Đang Kích Hoạt Giả Lập Thảm Họa Cháy Rừng</span>
+          </div>
+          <p class="text-[11px] text-rose-200/90 truncate mt-0.5 font-sans">
+            Khói bụi PM2.5 vượt ngưỡng nguy hại đặc biệt. Khuyến cáo y tế: Ở trong nhà, đóng kín cửa sổ, bật máy lọc không khí HEPA và đeo khẩu trang N95 ngoài trời.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button onclick="toggleWildfireSimulation(false)" class="px-3 py-1 text-[11px] font-semibold rounded bg-rose-600 hover:bg-rose-500 text-white transition-colors flex items-center gap-1 shadow-sm border border-rose-400">
+          <span>Tắt giả lập</span>
+          <span class="text-xs">✕</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===================================================================== -->
   <!-- TOP NAVIGATION BAR                                                    -->
   <!-- ===================================================================== -->
   <header class="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur-md">
@@ -141,14 +167,14 @@
               </div>
             </div>
 
-            <!-- Big AQI + particulates + advisory -->
+            <!-- Big AQI + particulates -->
             <div id="live-aqi-box" class="flex flex-col sm:flex-row items-stretch gap-3 bg-slate-950/70 p-3 rounded-lg border border-slate-800">
               <div id="live-aqi-circle" class="aqi-tile min-w-[115px] sm:min-w-[124px] border-slate-700">
                 <span class="text-[9.5px] font-mono text-slate-400 uppercase tracking-wider font-semibold">US AQI</span>
                 <span id="live-aqi-value" class="text-[38px] sm:text-[42px] leading-none font-mono font-black text-white my-0.5">--</span>
                 <span class="text-[9px] font-mono text-slate-500">Chuẩn EPA 2024</span>
               </div>
-              <div class="flex-1 min-w-0 flex flex-col justify-between gap-2">
+              <div class="flex-1 min-w-0 flex flex-col justify-center gap-2">
                 <div class="grid grid-cols-3 gap-2 text-[11px] font-mono">
                   <div class="mini-stat !p-2" id="stat-pm25">
                     <div class="flex justify-between items-baseline"><span class="font-medium text-slate-400">PM2.5</span><em class="text-slate-500">µg/m³</em></div>
@@ -165,12 +191,6 @@
                     <strong id="live-vpd" class="text-[16px] text-white">--</strong>
                     <span class="text-[9px] text-slate-500">Thâm hụt áp suất</span>
                   </div>
-                </div>
-                <div class="flex items-center gap-2 px-2.5 py-1.5 rounded bg-slate-900/90 border border-slate-800 text-[11.5px] text-slate-300">
-                  <svg class="w-4 h-4 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                  <p id="live-health-advice" class="leading-snug line-clamp-2">
-                    Chất lượng không khí an toàn cho mọi hoạt động ngoài trời.
-                  </p>
                 </div>
               </div>
             </div>
@@ -235,17 +255,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Scientific Insight: EPA 2024 Rule explanation -->
-              <div class="flex items-start gap-2 p-2 rounded bg-slate-900/70 border border-slate-800/80 text-[10.5px] font-sans text-slate-300">
-                <span class="text-sky-400 font-bold shrink-0">💡 Giải thích khoa học chuẩn US EPA 2024:</span>
-                <p class="leading-relaxed">
-                  AQI tổng hợp được tính theo công thức cực đại của các chỉ số thành phần: 
-                  <code class="text-amber-300 font-mono font-bold">AQI = max(Sub-index_PM2.5, Sub-index_PM10, Sub-index_O3)</code>. 
-                  Theo quy định mới nhất của US EPA (áp dụng chính thức năm 2024), ngưỡng chuẩn năm của PM2.5 được siết chặt từ 12.0 xuống <strong>9.0 µg/m³</strong>. 
-                  Vì vậy, nồng độ PM2.5 từ <strong>9.1 – 35.4 µg/m³</strong> đã bắt đầu kích hoạt mức <em>Moderate (AQI 51–100)</em> thay vì Good như trước đây. Với nồng độ <strong>9.2 µg/m³</strong>, công thức nội suy EPA cho kết quả chính xác <strong>AQI = 51</strong>.
-                </p>
-              </div>
             </div>
 
             <!-- 6 Atmospheric Telemetry (Sleek 6-column strip on wide screens) -->
@@ -277,7 +286,15 @@
                 <span id="what-if-summary-metrics" class="text-slate-300">Gió 10km/h · 20°C · 0 biến thiên</span>
               </div>
 
-              <div class="flex items-center gap-1.5 shrink-0" onclick="event.stopPropagation()">
+              <div class="flex items-center gap-2 shrink-0" onclick="event.stopPropagation()">
+                <!-- Wildfire Simple Slider/Toggle Switch with Fire Icon -->
+                <label class="wildfire-switch-wrapper flex items-center gap-1.5 cursor-pointer select-none px-2 py-0.5 rounded bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors" title="Bật/Tắt Giả lập Thảm họa Cháy rừng">
+                  <span class="text-xs">🔥</span>
+                  <input type="checkbox" id="wi-wildfire-toggle" class="sr-only peer" onchange="toggleWildfireSimulation(this.checked)" />
+                  <div class="w-7 h-3.5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-rose-600 relative"></div>
+                  <span id="wi-fire-label" class="text-[10px] font-semibold text-slate-400 peer-checked:text-rose-400">Cháy rừng</span>
+                </label>
+
                 <span id="wi-status-chip" class="wi-chip">Thực tế</span>
                 <button onclick="resetWhatIf()" class="ctl-btn ctl-btn-sm" title="Khôi phục thông số đo thực tế">Đặt lại</button>
                 <button class="icon-btn" onclick="toggleCollapsiblePanel('what-if'); event.stopPropagation();" aria-label="Mở hoặc thu gọn bảng What-If">
@@ -379,6 +396,14 @@
               <span><i class="bg-rose-500"></i>151–200</span>
               <span><i class="bg-purple-500"></i>&gt;200</span>
             </div>
+          </div>
+
+          <!-- Health Advisory strip under satellite map -->
+          <div id="health-advice-box" class="flex items-start gap-2 px-2.5 py-2 rounded-lg bg-slate-950/70 border border-slate-800 text-[11px] text-slate-300">
+            <svg id="health-advice-icon" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <p id="live-health-advice" class="leading-relaxed">
+              Chất lượng không khí an toàn cho mọi hoạt động ngoài trời.
+            </p>
           </div>
 
           <!-- Best Outdoor Window strip -->
@@ -578,11 +603,11 @@
         <div class="grid grid-cols-2 md:grid-cols-12 gap-2 items-end">
           <div class="md:col-span-2">
             <label class="ctl-label" for="win2-start-date">Từ ngày</label>
-            <input id="win2-start-date" type="date" min="2018-01-01" max="2026-11-03" class="ctl-input font-mono" />
+            <input id="win2-start-date" type="date" min="2018-01-01" max="2026-11-11" class="ctl-input font-mono" />
           </div>
           <div class="md:col-span-2">
             <label class="ctl-label" for="win2-end-date">Đến ngày</label>
-            <input id="win2-end-date" type="date" min="2018-01-01" max="2026-11-03" class="ctl-input font-mono" />
+            <input id="win2-end-date" type="date" min="2018-01-01" max="2026-11-11" class="ctl-input font-mono" />
           </div>
           <div class="col-span-2 md:col-span-6">
             <label class="ctl-label" for="win2-source-mode">Nguồn dữ liệu quan trắc (Trạm mặt đất EPA vs Mô hình khí quyển)</label>
@@ -593,8 +618,11 @@
               <option value="openmeteo_only">Chỉ mô hình phân tích khí quyển vệ tinh (FRES, LA, SJ · 2023-2026)</option>
             </select>
           </div>
-          <div class="col-span-2 md:col-span-2">
-            <button onclick="applyCustomDateWindow()" class="ctl-btn ctl-btn-primary w-full justify-center !py-[0.4rem]">Áp Dụng Khoảng Ngày</button>
+          <div class="col-span-2 md:col-span-2 flex items-center gap-1.5">
+            <button onclick="applyCustomDateWindow()" class="ctl-btn ctl-btn-primary flex-1 justify-center !py-[0.4rem]">Áp Dụng</button>
+            <button id="btn-reload-missing-dates" onclick="reloadMissingDates()" title="Tải lại và đồng bộ các ngày khuyết mới nhất vào kho dữ liệu" class="ctl-btn ctl-btn-secondary !px-2.5 !py-[0.4rem] text-emerald-400 hover:text-emerald-300 transition-colors" aria-label="Đồng bộ ngày khuyết">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
           </div>
         </div>
 

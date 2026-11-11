@@ -654,6 +654,10 @@ function applyLiveForecastData(data) {
 }
 
 function selectLiveRegion(regionKey) {
+  const toggle = byId("wi-wildfire-toggle");
+  if (toggle && toggle.checked) {
+    toggleWildfireSimulation(false);
+  }
   APP_STATE.liveRegion = regionKey;
   setSegActive(STATION_KEYS.map((rk) => `st-btn-${rk}`), `st-btn-${regionKey}`);
   loadLiveForecast(regionKey, false);
@@ -832,6 +836,10 @@ function renderCurrentObservation(meta, forecast) {
     bestBadge.className = `px-1.5 py-0.5 rounded text-[10px] font-mono border ${bestTheme.badgeClass}`;
   }
   setText("live-health-advice", theme.advice);
+  const adviceIcon = byId("health-advice-icon");
+  if (adviceIcon) {
+    adviceIcon.style.color = theme.hex;
+  }
 
   setText("live-temp", curr.temperature_2m);
   setText("live-rh", curr.relative_humidity_2m);
@@ -1653,8 +1661,111 @@ async function runWhatIfSimulation() {
   }
 }
 
+async function toggleWildfireSimulation(isFireActive) {
+  const toggle = byId("wi-wildfire-toggle");
+  if (toggle) toggle.checked = isFireActive;
+  const banner = byId("wildfire-alert-banner");
+  const box = byId("what-if-status-box");
+  const fireLabel = byId("wi-fire-label");
+
+  if (isFireActive) {
+    if (banner) banner.classList.remove("hidden");
+    if (box) box.classList.add("wildfire-active-border");
+    if (fireLabel) fireLabel.className = "text-[10px] font-bold text-rose-400";
+
+    // Set wildfire parameters: 34°C, 14% RH, 38 km/h wind, 0 mm rain
+    const sWind = byId("wi-slider-wind");
+    const sTemp = byId("wi-slider-temp");
+    const sRh = byId("wi-slider-rh");
+    const sRain = byId("wi-slider-rain");
+
+    if (sWind) { sWind.value = 38; sWind.disabled = true; }
+    if (sTemp) { sTemp.value = 34; sTemp.disabled = true; }
+    if (sRh) { sRh.value = 14; sRh.disabled = true; }
+    if (sRain) { sRain.value = 0; sRain.disabled = true; }
+
+    onWhatIfSlide(false);
+
+    // Call API with wildfire_mode: true
+    cancelPendingWhatIf();
+    const controller = new AbortController();
+    APP_STATE.whatIf.controller = controller;
+    const seq = ++APP_STATE.whatIf.seq;
+    const liveSeqAtStart = APP_STATE.liveSeq;
+    setWhatIfChip("pending");
+
+    const payload = {
+      region_key: APP_STATE.liveRegion,
+      wind_speed_10m: 38.0,
+      temperature_2m: 34.0,
+      relative_humidity_2m: 14.0,
+      rain: 0.0,
+      wildfire_mode: true,
+    };
+
+    try {
+      const resp = await fetch("/api/what-if", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+      const res = await resp.json();
+      if (seq !== APP_STATE.whatIf.seq || liveSeqAtStart !== APP_STATE.liveSeq) return;
+
+      APP_STATE.simulatedForecast = res.simulated;
+      APP_STATE.whatIf.controller = null;
+
+      const chip = byId("wi-status-chip");
+      if (chip) {
+        chip.className = "wi-chip is-sim !bg-rose-950 !text-rose-300 !border-rose-600";
+        chip.textContent = "🔥 Cháy rừng";
+      }
+
+      const deltaBadge = byId("wi-delta-badge");
+      if (deltaBadge) {
+        deltaBadge.textContent = "⚠️ Khói cháy rừng: AQI > 300 (Hazardous)";
+        deltaBadge.className = "text-[10.5px] font-mono font-bold text-rose-400";
+      }
+
+      rerenderSimulationViews();
+    } catch (err) {
+      if (err.name === "AbortError") return;
+      console.error("Wildfire simulation error:", err);
+    }
+  } else {
+    // Turn off wildfire simulation
+    if (banner) banner.classList.add("hidden");
+    if (box) box.classList.remove("wildfire-active-border");
+    if (fireLabel) fireLabel.className = "text-[10px] font-semibold text-slate-400";
+
+    // Re-enable sliders
+    ["wind", "temp", "rh", "rain"].forEach((k) => {
+      const s = byId(`wi-slider-${k}`);
+      if (s) s.disabled = false;
+    });
+
+    // Reset back to live station data
+    resetWhatIf();
+  }
+}
+
 function resetWhatIf() {
   if (!APP_STATE.liveData) return;
+  const toggle = byId("wi-wildfire-toggle");
+  if (toggle && toggle.checked) {
+    toggle.checked = false;
+    const banner = byId("wildfire-alert-banner");
+    if (banner) banner.classList.add("hidden");
+    const box = byId("what-if-status-box");
+    if (box) box.classList.remove("wildfire-active-border");
+    const fireLabel = byId("wi-fire-label");
+    if (fireLabel) fireLabel.className = "text-[10px] font-semibold text-slate-400";
+    ["wind", "temp", "rh", "rain"].forEach((k) => {
+      const s = byId(`wi-slider-${k}`);
+      if (s) s.disabled = false;
+    });
+  }
   cancelPendingWhatIf();
   APP_STATE.simulatedForecast = null;
   resetWhatIfSlidersToCurrent(APP_STATE.liveData.forecast.current);
@@ -1977,6 +2088,23 @@ function applyCustomDateWindow() {
   loadDashboardWindow();
 }
 
+async function reloadMissingDates() {
+  const btn = byId("btn-reload-missing-dates");
+  if (btn) btn.classList.add("animate-spin");
+  try {
+    const res = await fetch("/api/reload-missing-dates", { method: "POST" });
+    const json = await res.json();
+    console.log("Đồng bộ ngày khuyết:", json);
+    await loadDashboardWindow();
+    alert(`Đã đồng bộ thành công các ngày khuyết!\nKho dữ liệu đã nạp đầy đủ đến: ${json.max_date || "mới nhất"}\nTổng số bản ghi: ${json.total_records_1h ? json.total_records_1h.toLocaleString() : "--"} dòng.`);
+  } catch (err) {
+    console.error("Lỗi khi tải lại ngày khuyết:", err);
+    alert("Không thể tải lại ngày khuyết. Vui lòng kiểm tra kết nối mạng.");
+  } finally {
+    if (btn) btn.classList.remove("animate-spin");
+  }
+}
+
 function setDashboardScenario(sc) {
   APP_STATE.win2.scenario = sc;
   setSegActive(["sc-btn-1h", "sc-btn-24h"], `sc-btn-${sc}`);
@@ -2095,6 +2223,12 @@ async function loadDashboardWindow() {
 
     byId("win2-start-date").value = data.start_date;
     byId("win2-end-date").value = data.end_date;
+    if (data.max_available_date) {
+      const sEl = byId("win2-start-date");
+      const eEl = byId("win2-end-date");
+      if (sEl) sEl.max = data.max_available_date;
+      if (eEl) eEl.max = data.max_available_date;
+    }
 
     const alertEl = byId("dual-source-alert");
     if (alertEl) alertEl.classList.toggle("hidden", !data.has_dual_source_overlap);

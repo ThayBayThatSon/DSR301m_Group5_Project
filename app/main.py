@@ -67,6 +67,7 @@ class WhatIfRequest(BaseModel):
     relative_humidity_2m: Optional[float] = None
     wind_speed_10m: Optional[float] = None
     rain: Optional[float] = None
+    wildfire_mode: Optional[bool] = False
 
 
 @app.get("/")
@@ -144,10 +145,16 @@ async def simulate_what_if(req: WhatIfRequest):
         "wind_speed_10m": req.wind_speed_10m,
         "rain": req.rain,
     }
-    fc_sim = engine.forecast_next_24_hours(fetch_res["df"], meta["openmeteo_id"], weather_overrides=overrides)
+    fc_sim = engine.forecast_next_24_hours(
+        fetch_res["df"],
+        meta["openmeteo_id"],
+        weather_overrides=overrides,
+        wildfire_mode=bool(req.wildfire_mode),
+    )
     return {
         "region_key": rk,
         "overrides": overrides,
+        "wildfire_mode": bool(req.wildfire_mode),
         "simulated": fc_sim,
     }
 
@@ -184,5 +191,11 @@ async def get_dashboard_window(
         source_mode=source_mode,
         leaderboard_region=region_filter,
     )
+    return res
+
+
+@app.api_route("/api/reload-missing-dates", methods=["GET", "POST"])
+async def reload_missing_dates():
+    res = data_mgr.reload_precomputed_stores()
     return res
 

@@ -88,8 +88,8 @@ WILDFIRE_PRESETS = [
         "id": "latest_today",
         "title": "Ngày Quan Trắc Mới Nhất (24h)",
         "badge": "Default",
-        "start_date": "2026-11-02",
-        "end_date": "2026-11-03",
+        "start_date": "2026-11-10",
+        "end_date": "2026-11-11",
         "source_mode": "seamless",
         "description": "Hiển thị kết quả dự báo của 10 mô hình đối chiếu với thực tế trong ngày quan trắc mới nhất trên cả 3 trạm.",
     },
@@ -97,8 +97,8 @@ WILDFIRE_PRESETS = [
         "id": "latest_7d",
         "title": "7 Ngày Gần Nhất (11/2026)",
         "badge": "Recent 7D",
-        "start_date": "2026-10-28",
-        "end_date": "2026-11-03",
+        "start_date": "2026-11-04",
+        "end_date": "2026-11-11",
         "source_mode": "seamless",
         "description": "Chuỗi 168 giờ liên tục tuần gần nhất từ Open-Meteo trên cả 3 lưu vực Fresno, Los Angeles và San Jose.",
     },
@@ -249,6 +249,18 @@ class AQIDataManager:
 
         self.diurnal_heatmaps = {}
         self._precompute_diurnal_heatmaps()
+
+    def reload_precomputed_stores(self):
+        self.load_precomputed_stores()
+        return {
+            "status": "success",
+            "message": "Đã tải lại toàn bộ kho dữ liệu và đồng bộ các ngày khuyết thành công.",
+            "total_records_1h": len(self.df_1h),
+            "total_records_24h": len(self.df_24h),
+            "min_date": str(self.df_1h["date"].min()),
+            "max_date": str(self.df_1h["date"].max()),
+            "stations": list(self.df_1h["station_id"].unique()),
+        }
 
     def _precompute_diurnal_heatmaps(self):
         try:

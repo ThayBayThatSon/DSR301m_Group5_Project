@@ -1448,3 +1448,51 @@ html.light #historical-heatmap-panel .bg-slate-950\/70 {
 html.light #historical-heatmap-panel .text-slate-300 {
   color: #0f172a;
 }
+
+#health-advice-box {
+  transition: all var(--t-fast);
+}
+html.light #health-advice-box {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #334155;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* ---------------------------------------------------------------------------
+   Wildfire Simulation Toggle Switch & Top Header Emergency Alert
+   --------------------------------------------------------------------------- */
+#wildfire-alert-banner {
+  animation: slideDownBanner 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDownBanner {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.wildfire-switch-wrapper {
+  transition: all var(--t-fast);
+}
+.wildfire-switch-wrapper:hover {
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.25);
+}
+
+.wildfire-active-border {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 18px rgba(244, 63, 94, 0.2) !important;
+}
+
+html.light .wildfire-switch-wrapper {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+html.light .wildfire-switch-wrapper span.text-slate-400 {
+  color: #64748b;
+}
