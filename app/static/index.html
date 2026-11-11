@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,23 +22,23 @@
   <!-- ===================================================================== -->
   <!-- EMERGENCY WILDFIRE ALERT BANNER (TOP HEADER NOTIFICATION)             -->
   <!-- ===================================================================== -->
-  <aside id="wildfire-alert-banner" class="hidden fixed top-0 inset-x-0 z-[60] bg-rose-950/95 border-b-2 border-rose-500 shadow-2xl backdrop-blur-md text-white transition-all duration-300" aria-label="Cảnh báo khẩn cấp cháy rừng">
+  <aside id="wildfire-alert-banner" class="hidden fixed top-0 inset-x-0 z-[60] bg-rose-950/95 border-b-2 border-rose-500 shadow-2xl backdrop-blur-md text-white transition-all duration-300" aria-label="Emergency Wildfire Alert">
     <div class="max-w-[1680px] mx-auto px-4 py-2 flex items-center justify-between gap-3">
       <div class="flex items-center gap-2.5 min-w-0">
         <span class="flex h-7 w-7 items-center justify-center rounded-full bg-rose-600 text-white animate-pulse shrink-0 text-sm shadow-md">🔥</span>
         <div class="min-w-0">
           <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-900 border border-rose-500 text-rose-200 uppercase tracking-wider">Cảnh Báo Khẩn Cấp: Hazardous (&gt;300 AQI)</span>
-            <span class="text-[12px] font-bold text-rose-100 hidden sm:inline">Đang Kích Hoạt Giả Lập Thảm Họa Cháy Rừng</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-900 border border-rose-500 text-rose-200 uppercase tracking-wider">Emergency Alert: Hazardous (&gt;300 AQI)</span>
+            <span class="text-[12px] font-bold text-rose-100 hidden sm:inline">Wildfire Simulation Active</span>
           </div>
           <p class="text-[11px] text-rose-200/90 truncate mt-0.5 font-sans">
-            Khói bụi PM2.5 vượt ngưỡng nguy hại đặc biệt. Khuyến cáo y tế: Ở trong nhà, đóng kín cửa sổ, bật máy lọc không khí HEPA và đeo khẩu trang N95 ngoài trời.
+            PM2.5 concentration exceeds hazardous thresholds. Health advisory: Remain indoors, seal windows, run HEPA air purifiers, and wear N95 respirators outdoors.
           </p>
         </div>
       </div>
       <div class="flex items-center gap-2 shrink-0">
         <button onclick="toggleWildfireSimulation(false)" class="px-3 py-1 text-[11px] font-semibold rounded bg-rose-600 hover:bg-rose-500 text-white transition-colors flex items-center gap-1 shadow-sm border border-rose-400">
-          <span>Tắt giả lập</span>
+          <span>Disable Simulation</span>
           <span class="text-xs">✕</span>
         </button>
       </div>
@@ -65,24 +65,24 @@
               </h1>
               <span class="hidden xl:flex px-1.5 py-0.2 text-[9.5px] font-mono font-medium rounded bg-slate-900 text-emerald-400 border border-slate-700 items-center gap-1 whitespace-nowrap">
                 <span class="status-indicator bg-emerald-400 pulse-dot"></span>
-                Trực tuyến
+                Online
               </span>
             </div>
             <p class="text-[10px] text-slate-500 truncate hidden sm:block">
-              LSTM &amp; GBDT Ensemble · Trạm Mặt Đất EPA &amp; Phân Tích Khí Quyển
+              LSTM &amp; GBDT Ensemble · EPA Ground Stations &amp; Atmospheric Analysis
             </p>
           </div>
         </div>
 
         <span class="w-px h-5 bg-slate-800 shrink-0 hidden md:block"></span>
 
-        <!-- Window Switcher Tabs (Permanently Fixed in Header, Never Jumps) -->
-        <nav class="seg shrink-0" role="tablist" aria-label="Chọn cửa sổ giao diện">
+        <!-- Window Switcher Tabs -->
+        <nav class="seg shrink-0" role="tablist" aria-label="Switch Window">
           <button id="tab-btn-win1" role="tab" onclick="switchWindow('win1')" class="seg-btn is-active">
-            <span class="font-mono text-slate-500 mr-1">01</span>Vận Hành
+            <span class="font-mono text-slate-500 mr-1">01</span>Live Ops
           </button>
           <button id="tab-btn-win2" role="tab" onclick="switchWindow('win2')" class="seg-btn">
-            <span class="font-mono text-slate-500 mr-1">02</span>Đối Chuẩn
+            <span class="font-mono text-slate-500 mr-1">02</span>Benchmark
           </button>
         </nav>
       </div>
@@ -92,23 +92,23 @@
         <!-- Cache banner (compact) -->
         <div id="cache-status-banner" class="cache-banner !max-w-[210px] hidden lg:inline-flex !py-1 !text-[10px]">
           <span class="status-indicator bg-slate-500"></span>
-          <span id="cache-status-text" class="truncate">Đang kết nối...</span>
+          <span id="cache-status-text" class="truncate">Connecting...</span>
         </div>
 
         <!-- API Quota & Cache Status -->
         <div class="flex items-center gap-2.5 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-md text-[10.5px] font-mono">
           <div class="flex items-center gap-1 text-slate-300">
-            <span class="text-slate-500">Lưu lượng:</span>
+            <span class="text-slate-500">API Quota:</span>
             <span id="quota-calls-badge" class="font-semibold text-slate-100">0 / 10,000</span>
           </div>
           <span class="text-slate-700">|</span>
-          <div class="text-slate-400 truncate max-w-[145px]" id="quota-saved-badge">Tối ưu tải: 100%</div>
+          <div class="text-slate-400 truncate max-w-[145px]" id="quota-saved-badge">Cache Savings: 100%</div>
         </div>
 
         <!-- Theme Toggle Button -->
-        <button id="theme-toggle-btn" onclick="toggleTheme()" class="ctl-btn !py-1 text-[11px] font-mono" title="Chuyển đổi giao diện Sáng / Tối (Phím tắt: T)">
+        <button id="theme-toggle-btn" onclick="toggleTheme()" class="ctl-btn !py-1 text-[11px] font-mono" title="Toggle Dark / Light Theme (Shortcut: T)">
           <span id="theme-icon">🌙</span>
-          <span id="theme-label" class="hidden sm:inline">Chế độ tối</span>
+          <span id="theme-label" class="hidden sm:inline">Dark Mode</span>
         </button>
       </div>
     </div>
@@ -127,22 +127,22 @@
         <div class="flex flex-wrap items-center gap-2 min-w-0">
           <span class="eyebrow !text-[11px] font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
             <svg class="w-3.5 h-3.5 text-blue-600 dark:text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Chọn trạm quan trắc trực tiếp:
+            Observation Station:
           </span>
-          <div class="seg" role="tablist" aria-label="Chọn trạm quan trắc">
+          <div class="seg" role="tablist" aria-label="Select Observation Station">
             <button id="st-btn-FRES" onclick="selectLiveRegion('FRES')" class="seg-btn is-active">Fresno <span class="seg-hint">Valley</span></button>
             <button id="st-btn-LA" onclick="selectLiveRegion('LA')" class="seg-btn">Los Angeles <span class="seg-hint">Coast</span></button>
             <button id="st-btn-SJ" onclick="selectLiveRegion('SJ')" class="seg-btn">San Jose <span class="seg-hint">Bay</span></button>
           </div>
-          <button id="btn-force-refresh" onclick="forceRefreshLive()" class="ctl-btn !py-1 text-[11px]" title="Làm mới quan trắc tức thời (TTL 60p, Cooldown 5p)">
+          <button id="btn-force-refresh" onclick="forceRefreshLive()" class="ctl-btn !py-1 text-[11px]" title="Force instant refresh (60m TTL, 5m Cooldown)">
             <svg class="w-3.5 h-3.5 text-blue-600 dark:text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
-            <span class="hidden sm:inline">Làm mới tức thời</span>
+            <span class="hidden sm:inline">Refresh</span>
           </button>
         </div>
 
         <div class="flex items-center gap-2 text-[10.5px] font-mono text-slate-600 dark:text-slate-400">
           <span class="status-indicator bg-emerald-500 pulse-dot"></span>
-          <span>Chu kỳ đồng bộ tự động 60 phút · Trạm bề mặt EPA &amp; CAMS</span>
+          <span>60-minute automatic sync cycle · EPA Surface &amp; CAMS</span>
         </div>
       </div>
 
@@ -152,13 +152,13 @@
         <!-- LEFT 8/12: Primary Operational Measurements & Telemetry -->
         <div class="lg:col-span-8 flex flex-col gap-2.5">
 
-          <!-- Current Observation Card (Clear, Authoritative & Spacious) -->
+          <!-- Current Observation Card -->
           <div id="live-obs-card" class="obs-card p-3 space-y-2.5 busy-target">
             <div class="flex flex-wrap items-center justify-between gap-3 pb-1 border-b border-slate-800/60">
               <div class="min-w-0">
                 <div class="flex items-center gap-2">
                   <span class="eyebrow px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800" id="live-basin-label">San Joaquin Valley Basin</span>
-                  <span class="text-[11px] text-slate-400">Quan trắc lúc <strong id="live-obs-time" class="font-mono text-slate-200">--</strong></span>
+                  <span class="text-[11px] text-slate-400">Observed at <strong id="live-obs-time" class="font-mono text-slate-200">--</strong></span>
                 </div>
                 <h2 class="text-[18px] sm:text-[20px] font-bold text-white leading-tight truncate mt-0.5" id="live-station-title">Fresno - Central Valley</h2>
               </div>
@@ -172,24 +172,24 @@
               <div id="live-aqi-circle" class="aqi-tile min-w-[115px] sm:min-w-[124px] border-slate-700">
                 <span class="text-[9.5px] font-mono text-slate-400 uppercase tracking-wider font-semibold">US AQI</span>
                 <span id="live-aqi-value" class="text-[38px] sm:text-[42px] leading-none font-mono font-black text-white my-0.5">--</span>
-                <span class="text-[9px] font-mono text-slate-500">Chuẩn EPA 2024</span>
+                <span class="text-[9px] font-mono text-slate-500">US EPA 2024</span>
               </div>
               <div class="flex-1 min-w-0 flex flex-col justify-center gap-2">
                 <div class="grid grid-cols-3 gap-2 text-[11px] font-mono">
                   <div class="mini-stat !p-2" id="stat-pm25">
                     <div class="flex justify-between items-baseline"><span class="font-medium text-slate-400">PM2.5</span><em class="text-slate-500">µg/m³</em></div>
                     <strong id="live-pm25" class="text-[16px] text-white">--</strong>
-                    <span class="text-[9px] text-slate-500">Bụi mịn (≤35)</span>
+                    <span class="text-[9px] text-slate-500">Fine PM (≤35)</span>
                   </div>
                   <div class="mini-stat !p-2" id="stat-pm10">
                     <div class="flex justify-between items-baseline"><span class="font-medium text-slate-400">PM10</span><em class="text-slate-500">µg/m³</em></div>
                     <strong id="live-pm10" class="text-[16px] text-white">--</strong>
-                    <span class="text-[9px] text-slate-500">Bụi thô (≤150)</span>
+                    <span class="text-[9px] text-slate-500">Coarse PM (≤150)</span>
                   </div>
                   <div class="mini-stat !p-2" id="stat-vpd">
                     <div class="flex justify-between items-baseline"><span class="font-medium text-slate-400">VPD</span><em class="text-slate-500">kPa</em></div>
                     <strong id="live-vpd" class="text-[16px] text-white">--</strong>
-                    <span class="text-[9px] text-slate-500">Thâm hụt áp suất</span>
+                    <span class="text-[9px] text-slate-500">Vapor Deficit</span>
                   </div>
                 </div>
               </div>
@@ -200,11 +200,11 @@
               <div class="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-800/60">
                 <div class="flex items-center gap-2">
                   <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                  <span class="font-bold text-slate-200 font-sans text-[12px]">Phân Rã Chỉ Số AQI Thành Phần &amp; Chất Ô Nhiễm Chủ Đạo (AQI Breakdown)</span>
+                  <span class="font-bold text-slate-200 font-sans text-[12px]">AQI Sub-Index Breakdown &amp; Dominant Pollutant</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <span class="text-slate-400 font-sans text-[10.5px]">Chất quyết định AQI (Dominant Pollutant):</span>
-                  <span id="dominant-pollutant-badge" class="px-2 py-0.5 rounded text-[10.5px] font-bold border border-amber-500/40 bg-amber-500/10 text-amber-300">Bụi mịn PM2.5</span>
+                  <span class="text-slate-400 font-sans text-[10.5px]">Dominant Pollutant:</span>
+                  <span id="dominant-pollutant-badge" class="px-2 py-0.5 rounded text-[10.5px] font-bold border border-amber-500/40 bg-amber-500/10 text-amber-300">PM2.5</span>
                 </div>
               </div>
 
@@ -213,12 +213,12 @@
                 <!-- PM2.5 Sub-index -->
                 <div class="subindex-card p-2 rounded bg-slate-900/80 border border-slate-800" id="subindex-card-pm25">
                   <div class="flex items-center justify-between">
-                    <span class="font-medium text-slate-300">Bụi Mịn PM2.5</span>
+                    <span class="font-medium text-slate-300">Fine Particulate (PM2.5)</span>
                     <span id="badge-pm25-sub" class="px-1.5 py-0.5 rounded text-[10px] border font-bold text-amber-300 border-amber-500/30 bg-amber-500/10">Sub-index: <strong id="val-subindex-pm25">51</strong></span>
                   </div>
                   <div class="flex items-baseline justify-between mt-1 text-[10.5px]">
-                    <span class="text-slate-400">Nồng độ: <strong id="conc-pm25" class="text-white">9.2</strong> µg/m³</span>
-                    <span id="tier-pm25" class="font-semibold text-amber-400">Trung bình (51–100)</span>
+                    <span class="text-slate-400">Concentration: <strong id="conc-pm25" class="text-white">9.2</strong> µg/m³</span>
+                    <span id="tier-pm25" class="font-semibold text-amber-400">Moderate (51–100)</span>
                   </div>
                   <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
                     <div id="bar-subindex-pm25" class="h-full bg-amber-500 rounded-full transition-all duration-500" style="width: 51%;"></div>
@@ -228,12 +228,12 @@
                 <!-- PM10 Sub-index -->
                 <div class="subindex-card p-2 rounded bg-slate-900/80 border border-slate-800" id="subindex-card-pm10">
                   <div class="flex items-center justify-between">
-                    <span class="font-medium text-slate-300">Bụi Thô PM10</span>
+                    <span class="font-medium text-slate-300">Coarse Particulate (PM10)</span>
                     <span id="badge-pm10-sub" class="px-1.5 py-0.5 rounded text-[10px] border font-bold text-emerald-300 border-emerald-500/30 bg-emerald-500/10">Sub-index: <strong id="val-subindex-pm10">11</strong></span>
                   </div>
                   <div class="flex items-baseline justify-between mt-1 text-[10.5px]">
-                    <span class="text-slate-400">Nồng độ: <strong id="conc-pm10" class="text-white">11.9</strong> µg/m³</span>
-                    <span id="tier-pm10" class="font-semibold text-emerald-400">Tốt (0–50)</span>
+                    <span class="text-slate-400">Concentration: <strong id="conc-pm10" class="text-white">11.9</strong> µg/m³</span>
+                    <span id="tier-pm10" class="font-semibold text-emerald-400">Good (0–50)</span>
                   </div>
                   <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
                     <div id="bar-subindex-pm10" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 11%;"></div>
@@ -243,12 +243,12 @@
                 <!-- Ozone Sub-index -->
                 <div class="subindex-card p-2 rounded bg-slate-900/80 border border-slate-800" id="subindex-card-o3">
                   <div class="flex items-center justify-between">
-                    <span class="font-medium text-slate-300">Khí Ozone (O₃)</span>
+                    <span class="font-medium text-slate-300">Ground-Level Ozone (O₃)</span>
                     <span id="badge-o3-sub" class="px-1.5 py-0.5 rounded text-[10px] border font-bold text-emerald-300 border-emerald-500/30 bg-emerald-500/10">Sub-index: <strong id="val-subindex-o3">38</strong></span>
                   </div>
                   <div class="flex items-baseline justify-between mt-1 text-[10.5px]">
-                    <span class="text-slate-400">Nồng độ: <strong id="conc-o3" class="text-white">74.5</strong> µg/m³</span>
-                    <span id="tier-o3" class="font-semibold text-emerald-400">Tốt (0–50)</span>
+                    <span class="text-slate-400">Concentration: <strong id="conc-o3" class="text-white">74.5</strong> µg/m³</span>
+                    <span id="tier-o3" class="font-semibold text-emerald-400">Good (0–50)</span>
                   </div>
                   <div class="w-full bg-slate-800 h-1.5 rounded-full mt-1.5 overflow-hidden">
                     <div id="bar-subindex-o3" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 38%;"></div>
@@ -257,47 +257,47 @@
               </div>
             </div>
 
-            <!-- 6 Atmospheric Telemetry (Sleek 6-column strip on wide screens) -->
+            <!-- 6 Atmospheric Telemetry Strip -->
             <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2" id="telemetry-grid">
-              <div class="telemetry-cell tm-temp"><div class="tm-label">Nhiệt Độ (2m)</div><div class="tm-value"><span id="live-temp">--</span> <small>°C</small></div></div>
-              <div class="telemetry-cell tm-rh"><div class="tm-label">Độ Ẩm Tương Đối</div><div class="tm-value"><span id="live-rh">--</span> <small>%</small></div></div>
-              <div class="telemetry-cell tm-wind"><div class="tm-label">Gió (10m)</div><div class="tm-value"><span id="live-wind">--</span> <small>km/h</small> <small class="text-slate-500">(<span id="live-wind-dir">--</span>°)</small></div></div>
-              <div class="telemetry-cell tm-rain"><div class="tm-label">Lượng Mưa</div><div class="tm-value"><span id="live-rain">--</span> <small>mm</small></div></div>
-              <div class="telemetry-cell tm-cloud"><div class="tm-label">Độ Phủ Mây</div><div class="tm-value"><span id="live-cloud">--</span> <small>%</small></div></div>
-              <div class="telemetry-cell tm-pressure"><div class="tm-label">Áp Suất Bề Mặt</div><div class="tm-value"><span id="live-pressure">--</span> <small>hPa</small></div></div>
+              <div class="telemetry-cell tm-temp"><div class="tm-label">Temperature (2m)</div><div class="tm-value"><span id="live-temp">--</span> <small>°C</small></div></div>
+              <div class="telemetry-cell tm-rh"><div class="tm-label">Relative Humidity</div><div class="tm-value"><span id="live-rh">--</span> <small>%</small></div></div>
+              <div class="telemetry-cell tm-wind"><div class="tm-label">Wind (10m)</div><div class="tm-value"><span id="live-wind">--</span> <small>km/h</small> <small class="text-slate-500">(<span id="live-wind-dir">--</span>°)</small></div></div>
+              <div class="telemetry-cell tm-rain"><div class="tm-label">Precipitation</div><div class="tm-value"><span id="live-rain">--</span> <small>mm</small></div></div>
+              <div class="telemetry-cell tm-cloud"><div class="tm-label">Cloud Cover</div><div class="tm-value"><span id="live-cloud">--</span> <small>%</small></div></div>
+              <div class="telemetry-cell tm-pressure"><div class="tm-label">Surface Pressure</div><div class="tm-value"><span id="live-pressure">--</span> <small>hPa</small></div></div>
             </div>
           </div>
 
-          <!-- What-If Simulator (collapsible on-demand sandbox) -->
+          <!-- What-If Simulator Panel -->
           <div id="what-if-status-box" class="obs-card p-3 flex flex-col gap-2.5 collapsible-panel transition-all" data-panel-id="what-if">
             <div class="collapsible-head flex items-center justify-between gap-2 cursor-pointer select-none" onclick="toggleCollapsiblePanel('what-if')" role="button" tabindex="0" aria-expanded="false">
               <div class="flex items-center gap-2 min-w-0">
                 <span class="w-2 h-2 rounded-full bg-sky-400 shrink-0"></span>
                 <div class="min-w-0">
-                  <h3 class="panel-title truncate">Giả Lập Kịch Bản What-If</h3>
-                  <p class="panel-sub truncate hidden sm:block">Kéo thanh trượt — dự báo, biểu đồ 24h &amp; TreeSHAP cập nhật tại chỗ.</p>
+                  <h3 class="panel-title truncate">What-If Weather Simulation</h3>
+                  <p class="panel-sub truncate hidden sm:block">Adjust sliders — 24h forecasts and TreeSHAP update in real time.</p>
                 </div>
               </div>
 
               <!-- Summary pill visible when collapsed -->
-              <div id="what-if-summary-pill" class="collapsible-summary-pill max-w-[280px] truncate" title="Thông số kịch bản hiện tại">
-                <span id="what-if-summary-state" class="text-emerald-400 font-semibold">Thực tế</span>
+              <div id="what-if-summary-pill" class="collapsible-summary-pill max-w-[280px] truncate" title="Current simulation parameters">
+                <span id="what-if-summary-state" class="text-emerald-400 font-semibold">Observed</span>
                 <span class="text-slate-600">│</span>
-                <span id="what-if-summary-metrics" class="text-slate-300">Gió 10km/h · 20°C · 0 biến thiên</span>
+                <span id="what-if-summary-metrics" class="text-slate-300">Wind 10km/h · 20°C · Baseline</span>
               </div>
 
               <div class="flex items-center gap-2 shrink-0" onclick="event.stopPropagation()">
                 <!-- Wildfire Simple Slider/Toggle Switch with Fire Icon -->
-                <label class="wildfire-switch-wrapper flex items-center gap-1.5 cursor-pointer select-none px-2 py-0.5 rounded bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors" title="Bật/Tắt Giả lập Thảm họa Cháy rừng">
+                <label class="wildfire-switch-wrapper flex items-center gap-1.5 cursor-pointer select-none px-2 py-0.5 rounded bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors" title="Toggle Emergency Wildfire Simulation">
                   <span class="text-xs">🔥</span>
                   <input type="checkbox" id="wi-wildfire-toggle" class="sr-only peer" onchange="toggleWildfireSimulation(this.checked)" />
                   <div class="w-7 h-3.5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-rose-600 relative"></div>
-                  <span id="wi-fire-label" class="text-[10px] font-semibold text-slate-400 peer-checked:text-rose-400">Cháy rừng</span>
+                  <span id="wi-fire-label" class="text-[10px] font-semibold text-slate-400 peer-checked:text-rose-400">Wildfire</span>
                 </label>
 
-                <span id="wi-status-chip" class="wi-chip">Thực tế</span>
-                <button onclick="resetWhatIf()" class="ctl-btn ctl-btn-sm" title="Khôi phục thông số đo thực tế">Đặt lại</button>
-                <button class="icon-btn" onclick="toggleCollapsiblePanel('what-if'); event.stopPropagation();" aria-label="Mở hoặc thu gọn bảng What-If">
+                <span id="wi-status-chip" class="wi-chip">Observed</span>
+                <button onclick="resetWhatIf()" class="ctl-btn ctl-btn-sm" title="Reset to observed baseline">Reset</button>
+                <button class="icon-btn" onclick="toggleCollapsiblePanel('what-if'); event.stopPropagation();" aria-label="Toggle What-If Panel">
                   <svg class="collapsible-chevron w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
                 </button>
               </div>
@@ -309,45 +309,45 @@
                   <!-- Wind -->
                   <div>
                     <div class="flex items-baseline justify-between font-mono">
-                      <span class="text-slate-400 font-sans">Tốc độ gió (10m)</span>
+                      <span class="text-slate-400 font-sans">Wind Speed (10m)</span>
                       <span><strong id="wi-val-wind" class="wi-val">10</strong> <span class="text-slate-500">km/h</span> <span id="wi-diff-wind" class="wi-diff"></span></span>
                     </div>
                     <div class="wi-track">
-                      <input id="wi-slider-wind" type="range" min="0" max="60" step="1" value="10" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Tốc độ gió" />
-                      <span id="wi-mark-wind" class="wi-mark" title="Giá trị thực tế"></span>
+                      <input id="wi-slider-wind" type="range" min="0" max="60" step="1" value="10" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Wind speed" />
+                      <span id="wi-mark-wind" class="wi-mark" title="Observed baseline"></span>
                     </div>
                   </div>
                   <!-- Temperature -->
                   <div>
                     <div class="flex items-baseline justify-between font-mono">
-                      <span class="text-slate-400 font-sans">Nhiệt độ (2m)</span>
+                      <span class="text-slate-400 font-sans">Temperature (2m)</span>
                       <span><strong id="wi-val-temp" class="wi-val">20</strong> <span class="text-slate-500">°C</span> <span id="wi-diff-temp" class="wi-diff"></span></span>
                     </div>
                     <div class="wi-track">
-                      <input id="wi-slider-temp" type="range" min="-2" max="45" step="0.5" value="20" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Nhiệt độ" />
-                      <span id="wi-mark-temp" class="wi-mark" title="Giá trị thực tế"></span>
+                      <input id="wi-slider-temp" type="range" min="-2" max="45" step="0.5" value="20" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Temperature" />
+                      <span id="wi-mark-temp" class="wi-mark" title="Observed baseline"></span>
                     </div>
                   </div>
                   <!-- Humidity -->
                   <div>
                     <div class="flex items-baseline justify-between font-mono">
-                      <span class="text-slate-400 font-sans">Độ ẩm tương đối</span>
+                      <span class="text-slate-400 font-sans">Relative Humidity</span>
                       <span><strong id="wi-val-rh" class="wi-val">50</strong> <span class="text-slate-500">%</span> <span id="wi-diff-rh" class="wi-diff"></span></span>
                     </div>
                     <div class="wi-track">
-                      <input id="wi-slider-rh" type="range" min="5" max="100" step="1" value="50" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Độ ẩm" />
-                      <span id="wi-mark-rh" class="wi-mark" title="Giá trị thực tế"></span>
+                      <input id="wi-slider-rh" type="range" min="5" max="100" step="1" value="50" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Relative humidity" />
+                      <span id="wi-mark-rh" class="wi-mark" title="Observed baseline"></span>
                     </div>
                   </div>
                   <!-- Rain -->
                   <div>
                     <div class="flex items-baseline justify-between font-mono">
-                      <span class="text-slate-400 font-sans">Lượng mưa tích lũy</span>
+                      <span class="text-slate-400 font-sans">Cumulative Rain</span>
                       <span><strong id="wi-val-rain" class="wi-val">0</strong> <span class="text-slate-500">mm</span> <span id="wi-diff-rain" class="wi-diff"></span></span>
                     </div>
                     <div class="wi-track">
-                      <input id="wi-slider-rain" type="range" min="0" max="25" step="0.5" value="0" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Lượng mưa" />
-                      <span id="wi-mark-rain" class="wi-mark" title="Giá trị thực tế"></span>
+                      <input id="wi-slider-rain" type="range" min="0" max="25" step="0.5" value="0" oninput="onWhatIfSlide(true)" onchange="runWhatIfSimulation()" aria-label="Precipitation" />
+                      <span id="wi-mark-rain" class="wi-mark" title="Observed baseline"></span>
                     </div>
                   </div>
                 </div>
@@ -355,8 +355,8 @@
                 <!-- In-place impact readout -->
                 <div class="mt-auto">
                   <div class="flex items-center justify-between mb-1">
-                    <span class="eyebrow">Biến thiên dự báo (Mô phỏng vs Cơ sở)</span>
-                    <span id="wi-delta-badge" class="text-[10.5px] font-mono font-semibold text-slate-400">Trạng thái thực tế</span>
+                    <span class="eyebrow">Forecast Variation (Simulated vs Baseline)</span>
+                    <span id="wi-delta-badge" class="text-[10.5px] font-mono font-semibold text-slate-400">Observed Baseline</span>
                   </div>
                   <div id="wi-impact-grid" class="grid grid-cols-4 gap-1.5"></div>
                 </div>
@@ -365,16 +365,16 @@
           </div>
         </div>
 
-        <!-- RIGHT 4/12: Satellite Map & Radar Window (Crisp & Proportionate) -->
+        <!-- RIGHT 4/12: Satellite Map & Radar Window -->
         <div class="lg:col-span-4 obs-card p-2.5 flex flex-col gap-2 min-h-[280px]">
           <div class="flex flex-wrap items-center justify-between gap-1.5">
             <div class="min-w-0">
-              <h3 class="panel-title truncate">Vị Trí Vệ Tinh &amp; Gió</h3>
-              <p id="live-topo-desc" class="panel-sub truncate text-[10.5px]">Địa hình trạm &amp; lưu vực xung quanh.</p>
+              <h3 class="panel-title truncate">Satellite Map &amp; Wind Radar</h3>
+              <p id="live-topo-desc" class="panel-sub truncate text-[10.5px]">Station topography and surrounding basin.</p>
             </div>
             <div class="seg">
-              <button onclick="setMapLayer('satellite')" id="map-btn-sat" class="seg-btn is-active !py-0.5 !px-1.5 text-[10px]">Vệ Tinh</button>
-              <button onclick="setMapLayer('topo')" id="map-btn-topo" class="seg-btn !py-0.5 !px-1.5 text-[10px]">Địa Hình</button>
+              <button onclick="setMapLayer('satellite')" id="map-btn-sat" class="seg-btn is-active !py-0.5 !px-1.5 text-[10px]">Satellite</button>
+              <button onclick="setMapLayer('topo')" id="map-btn-topo" class="seg-btn !py-0.5 !px-1.5 text-[10px]">Terrain</button>
             </div>
           </div>
 
@@ -384,7 +384,7 @@
             <div id="map-wind-hud" class="map-hud !py-0.5 !px-1.5 !text-[11px]">
               <svg id="map-wind-arrow" viewBox="0 0 24 24" class="w-4 h-4 text-sky-400 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V4M5 11l7-7 7 7"/></svg>
               <div class="leading-tight">
-                <div class="text-[8.5px] uppercase tracking-wider text-slate-400">Vector gió</div>
+                <div class="text-[8.5px] uppercase tracking-wider text-slate-400">Wind Vector</div>
                 <div id="map-wind-text" class="font-mono text-[11px] font-semibold text-slate-100">-- km/h</div>
               </div>
             </div>
@@ -402,7 +402,7 @@
           <div id="health-advice-box" class="flex items-start gap-2 px-2.5 py-2 rounded-lg bg-slate-950/70 border border-slate-800 text-[11px] text-slate-300">
             <svg id="health-advice-icon" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <p id="live-health-advice" class="leading-relaxed">
-              Chất lượng không khí an toàn cho mọi hoạt động ngoài trời.
+              Air quality is safe for all outdoor physical activities.
             </p>
           </div>
 
@@ -413,13 +413,13 @@
                 <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
               </div>
               <div class="min-w-0">
-                <div class="eyebrow !text-[9px]">Giờ tối ưu ngoài trời</div>
+                <div class="eyebrow !text-[9px]">Optimal Outdoor Window</div>
                 <div class="text-[11.5px] font-mono font-bold text-slate-100 truncate" id="best-outdoor-time">--:-- (AQI --)</div>
               </div>
             </div>
             <span id="best-outdoor-badge" class="px-1.5 py-0.5 rounded text-[9.5px] font-mono border border-slate-700 text-slate-400 shrink-0">--</span>
           </div>
-          <div id="live-coords-text" class="text-[9.5px] font-mono text-slate-500 truncate">Tọa độ: --</div>
+          <div id="live-coords-text" class="text-[9.5px] font-mono text-slate-500 truncate">Coordinates: --</div>
         </div>
       </div>
 
@@ -429,24 +429,24 @@
         <div class="lg:col-span-8 obs-card p-2.5 flex flex-col gap-2 busy-target" id="forecast-card">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="min-w-0">
-              <h3 class="panel-title">Dự Báo US AQI Đa Tầm &amp; Xu Hướng 24 Giờ Tới</h3>
-              <p class="panel-sub truncate">LSTM (quán tính ngắn hạn +1..3h) · Voting Ensemble GBDT (tầm xa +24h) · Di chuột lên biểu đồ để xem chi tiết.</p>
+              <h3 class="panel-title">24-Hour Multi-Horizon US AQI Forecast &amp; Trajectory</h3>
+              <p class="panel-sub truncate">LSTM (short-term inertia +1..3h) · Voting Ensemble GBDT (day-ahead +24h) · Hover for details.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2.5 text-[11px]">
               <div class="flex items-center gap-1.5">
-                <span class="text-slate-400 whitespace-nowrap">Đường biểu diễn:</span>
+                <span class="text-slate-400 whitespace-nowrap">View Mode:</span>
                 <div class="seg" id="traj-mode-seg">
-                  <button id="traj-mode-rec" onclick="setTrajViewMode('rec')" class="seg-btn is-active !py-0.5 !px-2 text-[10.5px] font-semibold" title="Khuyến nghị: Ensemble + LSTM Nowcasting + Dải tin cậy 90%">⭐ Khuyến nghị</button>
-                  <button id="traj-mode-all" onclick="setTrajViewMode('all')" class="seg-btn !py-0.5 !px-2 text-[10.5px] font-semibold" title="Hiển thị tất cả 5 mô hình dự báo">📊 Tất cả</button>
-                  <button id="traj-mode-ind" onclick="setTrajViewMode('ind')" class="seg-btn !py-0.5 !px-2 text-[10.5px] font-semibold" title="Tùy chọn bật tắt từng mô hình qua Legend">🎯 Tùy chọn</button>
+                  <button id="traj-mode-rec" onclick="setTrajViewMode('rec')" class="seg-btn is-active !py-0.5 !px-2 text-[10.5px] font-semibold" title="Recommended: Ensemble + LSTM Nowcasting + 90% CI">⭐ Recommended</button>
+                  <button id="traj-mode-all" onclick="setTrajViewMode('all')" class="seg-btn !py-0.5 !px-2 text-[10.5px] font-semibold" title="Display all 5 forecasting models">📊 All Models</button>
+                  <button id="traj-mode-ind" onclick="setTrajViewMode('ind')" class="seg-btn !py-0.5 !px-2 text-[10.5px] font-semibold" title="Custom toggle models via Legend">🎯 Custom</button>
                 </div>
               </div>
 
               <div class="flex items-center gap-1.5">
-                <label for="horizon-model-select" class="text-slate-400 whitespace-nowrap">Thẻ số:</label>
+                <label for="horizon-model-select" class="text-slate-400 whitespace-nowrap">Model Cards:</label>
                 <select id="horizon-model-select" onchange="renderHorizonCards()" class="ctl-input !w-auto !py-0.5 !text-[11px]">
-                  <option value="AUTO">Khuyến nghị (LSTM 1-3h &amp; Ensemble 24h)</option>
-                  <option value="LSTM (PyTorch)">LSTM (PyTorch) — Hạng 1 Nowcasting</option>
+                  <option value="AUTO">Recommended (LSTM 1-3h &amp; Ensemble 24h)</option>
+                  <option value="LSTM (PyTorch)">LSTM (PyTorch) — Rank 1 Nowcasting</option>
                   <option value="Voting Ensemble">Voting Ensemble (Top 3 GBDT)</option>
                   <option value="LightGBM">LightGBM SOTA</option>
                   <option value="XGBoost">XGBoost</option>
@@ -470,14 +470,14 @@
             <div class="flex items-center gap-2 min-w-0">
               <span class="w-2 h-2 rounded-full bg-rose-400 shrink-0"></span>
               <div class="min-w-0">
-                <h3 class="panel-title truncate">Phân Rã Thuộc Tính TreeSHAP</h3>
-                <p class="panel-sub truncate hidden sm:block"><span class="text-rose-400">■ Đẩy tăng</span> · <span class="text-emerald-400">■ Kéo giảm AQI</span></p>
+                <h3 class="panel-title truncate">TreeSHAP Feature Attribution</h3>
+                <p class="panel-sub truncate hidden sm:block"><span class="text-rose-400">■ Increases AQI</span> · <span class="text-emerald-400">■ Decreases AQI</span></p>
               </div>
             </div>
 
             <!-- Summary pill visible when collapsed -->
-            <div id="shap-summary-pill" class="collapsible-summary-pill max-w-[210px] truncate" title="Tác động SHAP nổi bật">
-              <span id="shap-summary-text" class="text-slate-300">Đang nạp trọng số...</span>
+            <div id="shap-summary-pill" class="collapsible-summary-pill max-w-[210px] truncate" title="Top SHAP feature impact">
+              <span id="shap-summary-text" class="text-slate-300">Loading weights...</span>
             </div>
 
             <div class="flex items-center gap-1.5 shrink-0" onclick="event.stopPropagation()">
@@ -485,7 +485,7 @@
                 <button id="shap-btn-1h" onclick="switchShapHorizon('1h')" class="seg-btn is-active !py-0.5 !px-1.5 text-[10px]">+1h</button>
                 <button id="shap-btn-24h" onclick="switchShapHorizon('24h')" class="seg-btn !py-0.5 !px-1.5 text-[10px]">+24h</button>
               </div>
-              <button class="icon-btn" onclick="toggleCollapsiblePanel('shap'); event.stopPropagation();" aria-label="Mở hoặc thu gọn bảng TreeSHAP">
+              <button class="icon-btn" onclick="toggleCollapsiblePanel('shap'); event.stopPropagation();" aria-label="Toggle TreeSHAP Panel">
                 <svg class="collapsible-chevron w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
               </button>
             </div>
@@ -499,7 +499,7 @@
                   <span class="text-slate-400">Base <strong id="shap-base-val" class="text-slate-100">--</strong></span>
                   <span class="text-rose-400" id="shap-decomp-up-label">+--</span>
                   <span class="text-emerald-400" id="shap-decomp-down-label">−--</span>
-                  <span class="text-slate-400">Dự báo <strong id="shap-pred-val" class="text-sky-400">--</strong></span>
+                  <span class="text-slate-400">Forecast <strong id="shap-pred-val" class="text-sky-400">--</strong></span>
                 </div>
                 <div class="shap-decomp">
                   <div id="shap-decomp-down" class="bg-emerald-500/80" style="width:50%"></div>
@@ -515,31 +515,31 @@
         </div>
       </div>
 
-      <!-- Row C: Historical Diurnal AQI Heatmap (Chu kỳ ô nhiễm 7 ngày x 24 giờ) -->
+      <!-- Row C: Historical Diurnal AQI Heatmap (7 Days x 24 Hours) -->
       <div class="obs-card p-3 space-y-2.5 collapsible-panel transition-all" id="historical-heatmap-panel" data-panel-id="diurnal-heatmap">
         <div class="collapsible-head flex items-center justify-between gap-2 cursor-pointer select-none" onclick="toggleCollapsiblePanel('diurnal-heatmap')" role="button" tabindex="0" aria-expanded="true">
           <div class="flex items-center gap-2 min-w-0">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
             <div class="min-w-0">
-              <h3 class="panel-title truncate">Biểu Đồ Nhiệt Chu Kỳ Ô Nhiễm Lịch Sử (Diurnal AQI Heatmap 7x24)</h3>
-              <p class="panel-sub truncate hidden sm:block">Phân tích tần suất và thời điểm ô nhiễm cao điểm theo 7 ngày trong tuần &amp; 24 giờ trong ngày.</p>
+              <h3 class="panel-title truncate">Historical Diurnal AQI Heatmap (7 Days × 24 Hours)</h3>
+              <p class="panel-sub truncate hidden sm:block">Analyze peak pollution timing across 7 days of the week and 24 hours of the day.</p>
             </div>
           </div>
 
           <!-- Summary pill when collapsed -->
-          <div id="heatmap-summary-pill" class="collapsible-summary-pill max-w-[280px] truncate" title="Tóm tắt chu kỳ ô nhiễm">
-            <span id="heatmap-summary-peak" class="text-rose-400 font-semibold">Đỉnh: Thứ 6 07:00</span>
+          <div id="heatmap-summary-pill" class="collapsible-summary-pill max-w-[280px] truncate" title="Pollution cycle summary">
+            <span id="heatmap-summary-peak" class="text-rose-400 font-semibold">Peak: Fri 07:00</span>
             <span class="text-slate-600">│</span>
-            <span id="heatmap-summary-clean" class="text-emerald-400">Sạch nhất: CN 14:00</span>
+            <span id="heatmap-summary-clean" class="text-emerald-400">Cleanest: Sun 14:00</span>
           </div>
 
           <div class="flex items-center gap-2 shrink-0" onclick="event.stopPropagation()">
             <!-- Heatmap Station Filter -->
             <div class="seg" id="hm-station-seg">
-              <button id="hm-btn-current" onclick="changeHeatmapStation('CURRENT')" class="seg-btn is-active !py-0.5 !px-2 text-[10.5px]">Trạm hiện tại</button>
-              <button id="hm-btn-all" onclick="changeHeatmapStation('ALL')" class="seg-btn !py-0.5 !px-2 text-[10.5px]">Toàn California</button>
+              <button id="hm-btn-current" onclick="changeHeatmapStation('CURRENT')" class="seg-btn is-active !py-0.5 !px-2 text-[10.5px]">Current Station</button>
+              <button id="hm-btn-all" onclick="changeHeatmapStation('ALL')" class="seg-btn !py-0.5 !px-2 text-[10.5px]">All California</button>
             </div>
-            <button class="icon-btn" onclick="toggleCollapsiblePanel('diurnal-heatmap'); event.stopPropagation();" aria-label="Mở hoặc thu gọn biểu đồ nhiệt chu kỳ">
+            <button class="icon-btn" onclick="toggleCollapsiblePanel('diurnal-heatmap'); event.stopPropagation();" aria-label="Toggle Diurnal Heatmap Panel">
               <svg class="collapsible-chevron w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
             </button>
           </div>
@@ -550,24 +550,24 @@
             <!-- Heatmap KPI highlights -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] font-mono">
               <div class="p-2 rounded bg-slate-900/80 border border-slate-800">
-                <span class="text-slate-400 text-[10px] block">Giờ Đỉnh Ô Nhiễm Tuần</span>
+                <span class="text-slate-400 text-[10px] block">Weekly Peak Pollution</span>
                 <strong id="hm-kpi-peak-time" class="text-rose-400 text-[13px]">--</strong>
-                <span class="text-[9.5px] text-slate-500 block">Trung bình: <span id="hm-kpi-peak-val" class="text-slate-300 font-bold">-- AQI</span></span>
+                <span class="text-[9.5px] text-slate-500 block">Average: <span id="hm-kpi-peak-val" class="text-slate-300 font-bold">-- AQI</span></span>
               </div>
               <div class="p-2 rounded bg-slate-900/80 border border-slate-800">
-                <span class="text-slate-400 text-[10px] block">Thời Điểm Sạch Nhất</span>
+                <span class="text-slate-400 text-[10px] block">Cleanest Window</span>
                 <strong id="hm-kpi-clean-time" class="text-emerald-400 text-[13px]">--</strong>
-                <span class="text-[9.5px] text-slate-500 block">Trung bình: <span id="hm-kpi-clean-val" class="text-slate-300 font-bold">-- AQI</span></span>
+                <span class="text-[9.5px] text-slate-500 block">Average: <span id="hm-kpi-clean-val" class="text-slate-300 font-bold">-- AQI</span></span>
               </div>
               <div class="p-2 rounded bg-slate-900/80 border border-slate-800">
-                <span class="text-slate-400 text-[10px] block">Quy Luật Ngày Trong Tuần</span>
-                <span id="hm-kpi-pattern" class="text-amber-300 text-[11.5px] font-sans font-semibold">Thứ 4 - Thứ 6 tích tụ ô nhiễm</span>
-                <span class="text-[9.5px] text-slate-500 block">Cuối tuần AQI giảm mạnh</span>
+                <span class="text-slate-400 text-[10px] block">Day-of-Week Pattern</span>
+                <span id="hm-kpi-pattern" class="text-amber-300 text-[11.5px] font-sans font-semibold">Wed - Fri Accumulation</span>
+                <span class="text-[9.5px] text-slate-500 block">Weekend Sharp Drop</span>
               </div>
               <div class="p-2 rounded bg-slate-900/80 border border-slate-800">
-                <span class="text-slate-400 text-[10px] block">Khung Giờ Nhạy Cảm</span>
+                <span class="text-slate-400 text-[10px] block">Sensitive Hours</span>
                 <span class="text-sky-300 text-[11.5px] font-sans font-semibold">06:00 - 09:00 &amp; 19:00 - 22:00</span>
-                <span class="text-[9.5px] text-slate-500 block">Giờ cao điểm &amp; nghịch nhiệt</span>
+                <span class="text-[9.5px] text-slate-500 block">Rush hour &amp; inversion</span>
               </div>
             </div>
 
@@ -589,9 +589,9 @@
       <div class="obs-card p-3 space-y-2.5">
         <div class="flex flex-wrap items-center justify-between gap-2.5">
           <div class="min-w-0 flex-1">
-            <h2 class="panel-title">Phân Tích Chuỗi Thời Gian (2018–2026) &amp; Bảng Xếp Hạng Động</h2>
+            <h2 class="panel-title">Time Series Analysis (2018–2026) &amp; Dynamic Leaderboard</h2>
             <p id="win2-preset-desc" class="panel-sub truncate">
-              Mặc định hiển thị ngày mới nhất trong tập dữ liệu để kiểm tra dự báo so với thực tế tại 3 trạm.
+              Comparing 10 machine learning and deep learning models against ground observations across 3 California basins.
             </p>
           </div>
           <div class="seg">
@@ -602,48 +602,48 @@
 
         <div class="grid grid-cols-2 md:grid-cols-12 gap-2 items-end">
           <div class="md:col-span-2">
-            <label class="ctl-label" for="win2-start-date">Từ ngày</label>
+            <label class="ctl-label" for="win2-start-date">From Date</label>
             <input id="win2-start-date" type="date" min="2018-01-01" max="2026-11-11" class="ctl-input font-mono" />
           </div>
           <div class="md:col-span-2">
-            <label class="ctl-label" for="win2-end-date">Đến ngày</label>
+            <label class="ctl-label" for="win2-end-date">To Date</label>
             <input id="win2-end-date" type="date" min="2018-01-01" max="2026-11-11" class="ctl-input font-mono" />
           </div>
           <div class="col-span-2 md:col-span-6">
-            <label class="ctl-label" for="win2-source-mode">Nguồn dữ liệu quan trắc (Trạm mặt đất EPA vs Mô hình khí quyển)</label>
+            <label class="ctl-label" for="win2-source-mode">Observation Data Source (EPA Ground vs Satellite Atmospheric)</label>
             <select id="win2-source-mode" onchange="loadDashboardWindow()" class="ctl-input">
-              <option value="seamless">Tự động liền mạch (Ưu tiên trạm bề mặt EPA → nối tiếp khí quyển vệ tinh)</option>
-              <option value="both_compare">Hiển thị đối chiếu cả 2 nguồn (Giai đoạn giao thoa 2023-2024)</option>
-              <option value="epa_only">Chỉ trạm bề mặt chuẩn US EPA AQS (FRES, LA · 2018-2024)</option>
-              <option value="openmeteo_only">Chỉ mô hình phân tích khí quyển vệ tinh (FRES, LA, SJ · 2023-2026)</option>
+              <option value="seamless">Seamless (Priority: EPA Surface → Open-Meteo Satellite)</option>
+              <option value="both_compare">Dual-Source Comparison (Overlap Period 2023–2024)</option>
+              <option value="epa_only">EPA AQS Ground Stations Only (FRES, LA · 2018–2024)</option>
+              <option value="openmeteo_only">Satellite Atmospheric Analysis Only (FRES, LA, SJ · 2023–2026)</option>
             </select>
           </div>
           <div class="col-span-2 md:col-span-2 flex items-center gap-1.5">
-            <button onclick="applyCustomDateWindow()" class="ctl-btn ctl-btn-primary flex-1 justify-center !py-[0.4rem]">Áp Dụng</button>
-            <button id="btn-reload-missing-dates" onclick="reloadMissingDates()" title="Tải lại và đồng bộ các ngày khuyết mới nhất vào kho dữ liệu" class="ctl-btn ctl-btn-secondary !px-2.5 !py-[0.4rem] text-emerald-400 hover:text-emerald-300 transition-colors" aria-label="Đồng bộ ngày khuyết">
+            <button onclick="applyCustomDateWindow()" class="ctl-btn ctl-btn-primary flex-1 justify-center !py-[0.4rem]">Apply</button>
+            <button id="btn-reload-missing-dates" onclick="reloadMissingDates()" title="Sync &amp; backfill missing hourly records into dataset" class="ctl-btn ctl-btn-secondary !px-2.5 !py-[0.4rem] text-emerald-400 hover:text-emerald-300 transition-colors" aria-label="Sync Missing Hours">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             </button>
           </div>
         </div>
 
         <div class="flex items-center gap-2 min-w-0">
-          <span class="eyebrow shrink-0">Sự kiện:</span>
+          <span class="eyebrow shrink-0">Presets:</span>
           <div id="wildfire-presets-container" class="flex gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
         </div>
 
         <div id="dual-source-alert" class="hidden px-3 py-1.5 rounded-md bg-amber-950/40 border border-amber-800/70 text-amber-200 text-[11px] flex items-center justify-between gap-2">
           <div>
-            <strong class="text-amber-100">[Giao thoa dữ liệu]</strong>
-            Khoảng thời gian này có đồng thời số liệu trạm bề mặt EPA và mô hình khí quyển. Hệ thống đang hiển thị theo chế độ được chọn.
+            <strong class="text-amber-100">[Dual Data Source]</strong>
+            Both EPA surface stations and atmospheric models are available for this time window.
           </div>
-          <button onclick="document.getElementById('win2-source-mode').value='both_compare'; loadDashboardWindow();" class="ctl-btn ctl-btn-sm">Đối chiếu 2 nguồn</button>
+          <button onclick="document.getElementById('win2-source-mode').value='both_compare'; loadDashboardWindow();" class="ctl-btn ctl-btn-sm">Compare Both Sources</button>
         </div>
       </div>
 
       <!-- KPI Summary Cards -->
       <div id="kpi-row" class="grid grid-cols-2 lg:grid-cols-4 gap-3 busy-target">
         <div class="kpi-card" id="kpi-card-leader" style="--kpi-accent:#2563eb">
-          <div class="kpi-label">Mô hình dẫn đầu</div>
+          <div class="kpi-label">Leader Model</div>
           <div class="kpi-value text-[19px] flex items-center gap-2 truncate">
             <span id="kpi-leader-dot" class="w-2.5 h-2.5 rounded-full inline-block shrink-0 bg-slate-600"></span>
             <span id="kpi-leader-name" class="truncate">--</span>
@@ -651,18 +651,18 @@
           <div class="kpi-sub" id="kpi-leader-sub">--</div>
         </div>
         <div class="kpi-card" id="kpi-card-mae" style="--kpi-accent:#10b981">
-          <div class="kpi-label">MAE tốt nhất</div>
+          <div class="kpi-label">Lowest MAE</div>
           <div class="kpi-value"><span id="kpi-mae-val">--</span> <small class="text-[12px] text-slate-500 font-medium">AQI</small></div>
           <div class="kpi-sub" id="kpi-mae-sub">--</div>
         </div>
         <div class="kpi-card" id="kpi-card-hours" style="--kpi-accent:#0284c7">
-          <div class="kpi-label">Tổng số giờ quan trắc</div>
-          <div class="kpi-value"><span id="kpi-hours-val">--</span> <small class="text-[12px] text-slate-500 font-medium">giờ</small></div>
+          <div class="kpi-label">Total Observed Hours</div>
+          <div class="kpi-value"><span id="kpi-hours-val">--</span> <small class="text-[12px] text-slate-500 font-medium">hours</small></div>
           <div class="kpi-sub" id="kpi-hours-sub">--</div>
         </div>
         <div class="kpi-card" id="kpi-card-extreme" style="--kpi-accent:#f43f5e">
-          <div class="kpi-label">Số giờ ô nhiễm AQI &gt; 150</div>
-          <div class="kpi-value"><span id="kpi-extreme-val">--</span> <small class="text-[12px] text-slate-500 font-medium">giờ</small></div>
+          <div class="kpi-label">Extreme Hours (AQI &gt; 150)</div>
+          <div class="kpi-value"><span id="kpi-extreme-val">--</span> <small class="text-[12px] text-slate-500 font-medium">hours</small></div>
           <div class="kpi-sub" id="kpi-extreme-sub">--</div>
         </div>
       </div>
@@ -671,11 +671,11 @@
       <div class="obs-card p-3 space-y-2.5 busy-target" id="station-charts-card">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="eyebrow">Chế độ xem</span>
+            <span class="eyebrow">View Mode</span>
             <div class="seg">
               <button id="sv-btn-ALL" onclick="setStationView('ALL')" class="seg-btn is-active">
                 <svg class="w-3.5 h-3.5 inline -mt-0.5 mr-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="16" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg>
-                Cả 3 trạm
+                All 3 Stations
               </button>
               <button id="sv-btn-FRES" onclick="setStationView('FRES')" class="seg-btn">Fresno</button>
               <button id="sv-btn-LA" onclick="setStationView('LA')" class="seg-btn">Los Angeles</button>
@@ -683,17 +683,17 @@
             </div>
           </div>
           <div class="flex flex-wrap items-center gap-1.5">
-            <button id="grp-btn-top" onclick="setModelGroup('top')" class="ctl-btn ctl-btn-sm is-active">Tiêu biểu</button>
+            <button id="grp-btn-top" onclick="setModelGroup('top')" class="ctl-btn ctl-btn-sm is-active">Featured</button>
             <button id="grp-btn-dl" onclick="setModelGroup('dl')" class="ctl-btn ctl-btn-sm">LSTM vs MLP</button>
-            <button id="grp-btn-all" onclick="setModelGroup('all')" class="ctl-btn ctl-btn-sm">Tất cả 10</button>
+            <button id="grp-btn-all" onclick="setModelGroup('all')" class="ctl-btn ctl-btn-sm">All 10 Models</button>
             <span class="w-px h-5 bg-slate-800 mx-0.5"></span>
-            <button id="btn-toggle-residual" onclick="toggleResidualMode()" class="ctl-btn ctl-btn-sm">Xem Sai Số Dự Báo</button>
+            <button id="btn-toggle-residual" onclick="toggleResidualMode()" class="ctl-btn ctl-btn-sm">Show Prediction Residuals</button>
           </div>
         </div>
 
         <div class="flex items-center gap-2 min-w-0 border-t border-slate-800 pt-2">
-          <span class="legend-actual shrink-0" title="Đường màu chuẩn = giá trị quan trắc thực tế"><i></i>Thực tế trạm</span>
-          <span class="legend-actual legend-om shrink-0" title="Đường nét đứt = Mô hình khí quyển đối chiếu"><i></i>Mô hình khí quyển</span>
+          <span class="legend-actual shrink-0" title="Solid Line = Observed Ground Truth"><i></i>Observed Station</span>
+          <span class="legend-actual legend-om shrink-0" title="Dashed Line = Atmospheric Model Overlap"><i></i>Atmospheric Model</span>
           <span class="w-px h-4 bg-slate-800 shrink-0"></span>
           <div id="model-chips-container" class="flex gap-1.5 overflow-x-auto no-scrollbar"></div>
         </div>
@@ -703,11 +703,11 @@
             <div class="station-head">
               <div class="min-w-0">
                 <h3 class="text-[11.5px] font-semibold text-slate-100 truncate"><span class="font-mono text-slate-500">01</span> Fresno — San Joaquin Valley</h3>
-                <p id="chart-meta-FRES" class="text-[10.5px] font-mono text-slate-500 truncate">Nguồn dữ liệu: --</p>
+                <p id="chart-meta-FRES" class="text-[10.5px] font-mono text-slate-500 truncate">Source: --</p>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <div id="chart-badges-FRES" class="flex items-center gap-1 text-[10.5px] font-mono"></div>
-                <button class="icon-btn" onclick="toggleStationFocus('FRES')" title="Phóng to / thu nhỏ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+                <button class="icon-btn" onclick="toggleStationFocus('FRES')" title="Expand / Collapse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
               </div>
             </div>
             <div id="win2-chart-FRES" class="station-chart"></div>
@@ -717,11 +717,11 @@
             <div class="station-head">
               <div class="min-w-0">
                 <h3 class="text-[11.5px] font-semibold text-slate-100 truncate"><span class="font-mono text-slate-500">02</span> Los Angeles — South Coast</h3>
-                <p id="chart-meta-LA" class="text-[10.5px] font-mono text-slate-500 truncate">Nguồn dữ liệu: --</p>
+                <p id="chart-meta-LA" class="text-[10.5px] font-mono text-slate-500 truncate">Source: --</p>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <div id="chart-badges-LA" class="flex items-center gap-1 text-[10.5px] font-mono"></div>
-                <button class="icon-btn" onclick="toggleStationFocus('LA')" title="Phóng to / thu nhỏ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+                <button class="icon-btn" onclick="toggleStationFocus('LA')" title="Expand / Collapse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
               </div>
             </div>
             <div id="win2-chart-LA" class="station-chart"></div>
@@ -731,11 +731,11 @@
             <div class="station-head">
               <div class="min-w-0">
                 <h3 class="text-[11.5px] font-semibold text-slate-100 truncate"><span class="font-mono text-slate-500">03</span> San Jose — SF Bay Area</h3>
-                <p id="chart-meta-SJ" class="text-[10.5px] font-mono text-slate-500 truncate">Nguồn dữ liệu: --</p>
+                <p id="chart-meta-SJ" class="text-[10.5px] font-mono text-slate-500 truncate">Source: --</p>
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
                 <div id="chart-badges-SJ" class="flex items-center gap-1 text-[10.5px] font-mono"></div>
-                <button class="icon-btn" onclick="toggleStationFocus('SJ')" title="Phóng to / thu nhỏ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+                <button class="icon-btn" onclick="toggleStationFocus('SJ')" title="Expand / Collapse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
               </div>
             </div>
             <div id="win2-chart-SJ" class="station-chart"></div>
@@ -748,9 +748,9 @@
 
         <div class="lg:col-span-4 obs-card p-3 flex flex-col gap-2.5">
           <div>
-            <span class="eyebrow">Đánh giá kiến trúc mạng</span>
-            <h3 class="panel-title mt-0.5">Đối Đầu Deep Learning: LSTM vs MLP</h3>
-            <p class="panel-sub">Thống kê trực tiếp trên các giờ quan trắc của cửa sổ đang chọn.</p>
+            <span class="eyebrow">Architecture Comparison</span>
+            <h3 class="panel-title mt-0.5">Deep Learning Head-to-Head: LSTM vs MLP</h3>
+            <p class="panel-sub">Direct comparison across observed hours in the selected window.</p>
           </div>
 
           <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 space-y-2">
@@ -763,8 +763,8 @@
               <div id="battle-win-bar" class="h-full bg-violet-400 transition-all duration-300" style="width: 50%;"></div>
             </div>
             <div class="flex justify-between text-[10.5px] font-mono">
-              <span class="text-slate-400">LSTM thắng: <strong id="battle-win-rate" class="text-slate-100">--%</strong></span>
-              <span id="battle-hours-count" class="text-slate-500">-- / -- giờ</span>
+              <span class="text-slate-400">LSTM Win Rate: <strong id="battle-win-rate" class="text-slate-100">--%</strong></span>
+              <span id="battle-hours-count" class="text-slate-500">-- / -- hours</span>
             </div>
           </div>
 
@@ -780,24 +780,24 @@
           </div>
 
           <div id="battle-summary-box" class="mt-auto bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-[11.5px] text-slate-300 leading-relaxed">
-            Đang tính toán mức cải thiện sai số...
+            Evaluating error reduction metrics...
           </div>
         </div>
 
         <div class="lg:col-span-8 obs-card p-3 flex flex-col gap-2.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="min-w-0">
-              <h3 class="panel-title">Bảng Xếp Hạng Hiệu Năng Mô Hình (Cửa Sổ Đang Chọn)</h3>
-              <p id="lb-window-subtitle" class="panel-sub font-mono truncate">Tự động đánh giá 10 mô hình trên khoảng thời gian đang quan sát.</p>
+              <h3 class="panel-title">Model Performance Leaderboard (Selected Window)</h3>
+              <p id="lb-window-subtitle" class="panel-sub font-mono truncate">Dynamically evaluated across all 10 models in the selected window.</p>
             </div>
             <div class="flex items-center gap-1.5">
               <select id="lb-region-filter" onchange="loadDashboardWindow()" class="ctl-input !w-auto">
-                <option value="ALL">Tổng hợp 3 Trạm</option>
+                <option value="ALL">All 3 Stations Combined</option>
                 <option value="FRES">Fresno</option>
                 <option value="LA">Los Angeles</option>
                 <option value="SJ">San Jose</option>
               </select>
-              <button onclick="exportWindowLeaderboardCSV()" class="ctl-btn">Xuất CSV</button>
+              <button onclick="exportWindowLeaderboardCSV()" class="ctl-btn">Export CSV</button>
             </div>
           </div>
 
@@ -805,9 +805,9 @@
             <table class="w-full text-left border-collapse text-[11.5px] font-mono data-table">
               <thead>
                 <tr>
-                  <th>Hạng</th>
-                  <th class="font-sans">Mô Hình</th>
-                  <th class="font-sans">Thuật Toán</th>
+                  <th>Rank</th>
+                  <th class="font-sans">Model</th>
+                  <th class="font-sans">Family</th>
                   <th class="text-right">MAE ↓</th>
                   <th class="text-right">RMSE</th>
                   <th class="text-right">R² ↑</th>
@@ -833,16 +833,16 @@
         <button id="syslog-toggle" class="syslog-bar" onclick="toggleSysLogDrawer()" aria-expanded="false" aria-controls="syslog-panel">
           <span class="flex items-center gap-1.5 text-slate-200 font-sans font-semibold text-[11px]">
             <span id="syslog-dot" class="status-indicator bg-slate-500"></span>
-            Nhật Ký Hệ Thống
+            System Logs &amp; Audit Trail
           </span>
           <span class="text-slate-700">│</span>
-          <span>Tổng cộng <strong id="syslog-count" class="text-slate-200">0</strong> bản ghi</span>
+          <span>Total <strong id="syslog-count" class="text-slate-200">0</strong> records</span>
           <span class="hidden md:inline text-slate-700">│</span>
-          <span class="hidden md:inline">Đồng bộ cuối: <strong id="syslog-last" class="text-slate-200">--</strong></span>
+          <span class="hidden md:inline">Last Sync: <strong id="syslog-last" class="text-slate-200">--</strong></span>
           <span class="hidden lg:inline text-slate-700">│</span>
-          <span class="hidden lg:inline">Trực tiếp <strong id="syslog-api" class="text-sky-300">0</strong> · Bộ đệm <strong id="syslog-cache" class="text-slate-200">0</strong></span>
+          <span class="hidden lg:inline">Direct API: <strong id="syslog-api" class="text-sky-300">0</strong> · Cache: <strong id="syslog-cache" class="text-slate-200">0</strong></span>
           <span class="ml-auto flex items-center gap-1.5 text-slate-400 font-sans">
-            <span id="syslog-toggle-label">Mở nhật ký</span>
+            <span id="syslog-toggle-label">Open Logs</span>
             <svg class="syslog-chevron w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 15l6-6 6 6"/></svg>
           </span>
         </button>
@@ -850,21 +850,21 @@
           <div>
             <div class="px-3.5 pb-3 pt-1 space-y-2">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <p class="panel-sub">Nhật ký hệ thống: Ghi nhận chu kỳ đồng bộ dữ liệu tự động hàng giờ, đọc bộ nhớ đệm và thao tác quan trắc viên.</p>
-                <button onclick="exportHistoryCSV()" class="ctl-btn ctl-btn-sm">Xuất Bảng CSV</button>
+                <p class="panel-sub">System audit trail: Logs automated hourly sync cycles, cache hits, and operator queries.</p>
+                <button onclick="exportHistoryCSV()" class="ctl-btn ctl-btn-sm">Export Log CSV</button>
               </div>
               <div class="overflow-auto max-h-[38vh] border border-slate-800 rounded-lg">
                 <table class="w-full text-left border-collapse text-[11px] font-mono data-table">
                   <thead>
                     <tr>
-                      <th>STT</th>
-                      <th>Thời Điểm</th>
-                      <th class="font-sans">Trạm</th>
-                      <th class="font-sans">Cơ Chế</th>
+                      <th>No.</th>
+                      <th>Timestamp</th>
+                      <th class="font-sans">Station</th>
+                      <th class="font-sans">Trigger</th>
                       <th class="font-sans">API</th>
                       <th class="text-right">AQI</th>
                       <th class="text-right">PM2.5</th>
-                      <th>T° / Gió</th>
+                      <th>Temp / Wind</th>
                       <th class="text-right">+1h (LSTM)</th>
                       <th class="text-right">+24h (Ens)</th>
                     </tr>

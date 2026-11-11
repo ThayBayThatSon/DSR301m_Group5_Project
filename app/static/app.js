@@ -144,7 +144,7 @@ function applyTheme(theme, notify = true) {
   const iconEl = byId("theme-icon");
   const labelEl = byId("theme-label");
   if (iconEl) iconEl.textContent = theme === "dark" ? "🌙" : "☀️";
-  if (labelEl) labelEl.textContent = theme === "dark" ? "Chế độ tối" : "Chế độ sáng";
+  if (labelEl) labelEl.textContent = theme === "dark" ? "Dark Mode" : "Light Mode";
 
   // Re-render UI components that have theme-dependent colors
   if (APP_STATE.liveData) {
@@ -197,7 +197,7 @@ function getAqiTheme(aqi) {
       tier: "good",
       tierClass: "aqi-tier-good",
       label: "Good (0–50)",
-      short: "Tốt",
+      short: "Good",
       hex: "#10b981",
       bgLight: "#ecfdf5",
       borderLight: "#a7f3d0",
@@ -210,7 +210,7 @@ function getAqiTheme(aqi) {
         ? "border-emerald-500 bg-emerald-50 text-emerald-700 shadow-sm"
         : "border-emerald-600 bg-emerald-950/40 text-emerald-400",
       advice:
-        "Chất lượng không khí ở mức tốt, đạt tiêu chuẩn an toàn cho mọi hoạt động thể chất ngoài trời.",
+        "Air quality is satisfactory, and air pollution poses little or no risk for outdoor activities.",
     };
   }
   if (val <= 100) {
@@ -218,7 +218,7 @@ function getAqiTheme(aqi) {
       tier: "moderate",
       tierClass: "aqi-tier-moderate",
       label: "Moderate (51–100)",
-      short: "Trung bình",
+      short: "Moderate",
       hex: "#eab308", // Official US EPA Yellow
       bgLight: "#fefce8",
       borderLight: "#fef08a",
@@ -231,7 +231,7 @@ function getAqiTheme(aqi) {
         ? "border-yellow-500 bg-yellow-50 text-yellow-900 shadow-sm"
         : "border-yellow-500 bg-yellow-950/40 text-yellow-300",
       advice:
-        "Chất lượng không khí ở mức trung bình. Hầu hết mọi người có thể hoạt động bình thường. Người đặc biệt nhạy cảm với ô nhiễm không khí nên cân nhắc giảm hoạt động thể chất kéo dài hoặc cường độ cao ngoài trời.",
+        "Air quality is acceptable. Unusually sensitive individuals should consider limiting prolonged outdoor exertion.",
     };
   }
   if (val <= 150) {
@@ -239,7 +239,7 @@ function getAqiTheme(aqi) {
       tier: "sensitive",
       tierClass: "aqi-tier-sensitive",
       label: "Unhealthy for Sensitive (101–150)",
-      short: "Nhạy cảm",
+      short: "Sensitive",
       hex: "#f97316",
       bgLight: "#fff7ed",
       borderLight: "#fed7aa",
@@ -252,7 +252,7 @@ function getAqiTheme(aqi) {
         ? "border-orange-500 bg-orange-50 text-orange-700 shadow-sm"
         : "border-orange-600 bg-orange-950/40 text-orange-400",
       advice:
-        "Người mắc bệnh hô hấp, tim mạch, người già và trẻ nhỏ nên giảm thời gian tiếp xúc ngoài trời kéo dài.",
+        "Members of sensitive groups (respiratory, cardiac, elderly, children) should reduce prolonged outdoor exertion.",
     };
   }
   if (val <= 200) {
@@ -260,7 +260,7 @@ function getAqiTheme(aqi) {
       tier: "unhealthy",
       tierClass: "aqi-tier-unhealthy",
       label: "Unhealthy (151–200)",
-      short: "Kém",
+      short: "Unhealthy",
       hex: "#ef4444",
       bgLight: "#fef2f2",
       borderLight: "#fecdd3",
@@ -273,7 +273,7 @@ function getAqiTheme(aqi) {
         ? "border-rose-500 bg-rose-50 text-rose-700 shadow-sm"
         : "border-rose-600 bg-rose-950/40 text-rose-400",
       advice:
-        "Cảnh báo ô nhiễm không khí. Toàn bộ cộng đồng nên hạn chế các hoạt động ngoài trời không cần thiết.",
+        "Air quality alert: Some members of the general public may experience health effects; sensitive groups may experience more serious effects.",
     };
   }
   if (val <= 300) {
@@ -281,7 +281,7 @@ function getAqiTheme(aqi) {
       tier: "very-unhealthy",
       tierClass: "aqi-tier-very-unhealthy",
       label: "Very Unhealthy (201–300)",
-      short: "Rất kém",
+      short: "Very Unhealthy",
       hex: "#8b5cf6",
       bgLight: "#f5f3ff",
       borderLight: "#ddd6fe",
@@ -294,14 +294,14 @@ function getAqiTheme(aqi) {
         ? "border-purple-500 bg-purple-50 text-purple-700 shadow-sm"
         : "border-purple-600 bg-purple-950/40 text-purple-400",
       advice:
-        "Chỉ số ô nhiễm nghiêm trọng do khói cháy rừng hoặc nghịch nhiệt. Tránh tuyệt đối tiếp xúc không khí bên ngoài.",
+        "Health alert: Serious risk of health effects increased for everyone. Avoid prolonged outdoor exertion.",
     };
   }
   return {
     tier: "hazardous",
     tierClass: "aqi-tier-hazardous",
     label: "Hazardous (>300)",
-    short: "Nguy hại",
+    short: "Hazardous",
     hex: "#881337",
     bgLight: "#fff1f2",
     borderLight: "#fecdd3",
@@ -314,7 +314,7 @@ function getAqiTheme(aqi) {
       ? "border-rose-700 bg-rose-100 text-rose-900 shadow-sm"
       : "border-rose-700 bg-rose-950 text-rose-200",
     advice:
-      "Tình trạng báo động khẩn cấp quốc gia về ô nhiễm. Toàn bộ người dân đóng kín cửa, bật lọc khí HEPA tối đa.",
+      "Health warning of emergency conditions: The entire population is likely to be affected. Keep windows closed and run HEPA filtration.",
   };
 }
 
@@ -450,7 +450,7 @@ function updateQuotaHeader(quota) {
     callsEl.textContent = `${calls} / ${limit}`;
   }
   if (savedEl) {
-    savedEl.textContent = `Tối ưu tải: ${quota.saved_percent}% (${quota.cache_hits_today} lượt đệm)`;
+    savedEl.textContent = `Optimized load: ${quota.saved_percent}% (${quota.cache_hits_today} cache hits)`;
   }
 }
 
@@ -505,7 +505,7 @@ function updateWindHud(currentObs) {
   const arrow = byId("map-wind-arrow");
   // Arrow glyph points north; rotate to the direction the wind blows TOWARDS.
   if (arrow) arrow.style.transform = `rotate(${(fromDeg + 180) % 360}deg)`;
-  setText("map-wind-text", `${fmtNum(speed, 1)} km/h · từ ${degToCompass(fromDeg)} (${Math.round(fromDeg)}°)`);
+  setText("map-wind-text", `${fmtNum(speed, 1)} km/h · from ${degToCompass(fromDeg)} (${Math.round(fromDeg)}°)`);
 }
 
 function updateSatelliteMap(meta, currentObs) {
@@ -563,10 +563,10 @@ function updateSatelliteMap(meta, currentObs) {
     .bindPopup(
       `<div style="font-family: Inter, sans-serif; color: ${tc.isLight ? "#0f172a" : "#f8fafc"}; min-width: 200px; padding: 2px;">
         <div style="font-weight: 700; font-size: 13px; color: ${tc.isLight ? "#0f172a" : "#ffffff"};">${meta.name}</div>
-        <div style="font-size: 11px; color: ${tc.text}; margin-bottom: 5px;">Lưu vực: ${meta.basin} (${meta.elevation_m}m)</div>
+        <div style="font-size: 11px; color: ${tc.text}; margin-bottom: 5px;">Basin: ${meta.basin} (${meta.elevation_m}m)</div>
         <div style="font-size: 12px; font-family: 'JetBrains Mono', monospace;">AQI: <strong>${aqi}</strong> [${theme.short}]</div>
         <div style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: ${tc.isLight ? "#334155" : "#cbd5e1"};">PM2.5: ${currentObs.pm25} µg/m³ · T: ${currentObs.temperature_2m}°C</div>
-        <div style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: ${tc.isLight ? "#334155" : "#cbd5e1"};">Gió: ${currentObs.wind_speed_10m} km/h (${currentObs.wind_direction_10m}°)</div>
+        <div style="font-size: 11px; font-family: 'JetBrains Mono', monospace; color: ${tc.isLight ? "#334155" : "#cbd5e1"};">Wind: ${currentObs.wind_speed_10m} km/h (${currentObs.wind_direction_10m}°)</div>
       </div>`
     );
 
@@ -597,7 +597,7 @@ function updateSatelliteMap(meta, currentObs) {
     fillOpacity: 1,
   })
     .addTo(APP_STATE.map)
-    .bindTooltip(`Vector hướng gió (${windSpeed} km/h)`, {
+    .bindTooltip(`Wind Vector (${windSpeed} km/h)`, {
       direction: "top",
     });
 
@@ -687,8 +687,8 @@ async function loadLiveForecast(regionKey, forceRefresh = false) {
   const statusEl = byId("cache-status-text");
   if (statusEl) {
     statusEl.textContent = forceRefresh
-      ? "Đang đồng bộ dữ liệu quan trắc khí quyển trực tiếp..."
-      : "Đang nạp dữ liệu quan trắc trạm & suy luận...";
+      ? "Syncing live atmospheric observation data..."
+      : "Loading station observations & running inference...";
   }
   const refreshBtn = byId("btn-force-refresh");
   if (refreshBtn) refreshBtn.disabled = true;
@@ -714,7 +714,7 @@ async function loadLiveForecast(regionKey, forceRefresh = false) {
   } catch (err) {
     console.error("Error loading live forecast:", err);
     if (statusEl && seq === APP_STATE.liveSeq) {
-      statusEl.textContent = "Lỗi kết nối máy chủ khi truy xuất dữ liệu.";
+      statusEl.textContent = "Server connection error while fetching data.";
     }
   } finally {
     endBusy(LIVE_BUSY_TARGETS);
@@ -827,7 +827,9 @@ function renderCurrentObservation(meta, forecast) {
   const bestDateStr = bestWin.time ? bestWin.time.slice(5, 10).replace("-", "/") : "";
   setText(
     "best-outdoor-time",
-    `${bestTimeStr} ngày ${bestDateStr} · AQI ${Math.round(bestWin.expected_aqi)}`
+    bestDateStr
+      ? `${bestTimeStr} on ${bestDateStr} · AQI ${Math.round(bestWin.expected_aqi)}`
+      : `${bestTimeStr} · AQI ${Math.round(bestWin.expected_aqi)}`
   );
   const bestTheme = getAqiTheme(bestWin.expected_aqi);
   const bestBadge = byId("best-outdoor-badge");
@@ -852,7 +854,7 @@ function renderCurrentObservation(meta, forecast) {
   setText("live-topo-desc", meta.topography_note);
   setText(
     "live-coords-text",
-    `Tọa độ: ${meta.lat.toFixed(4)}°N, ${meta.lon.toFixed(4)}°W · Độ cao: ${meta.elevation_m}m`
+    `Coordinates: ${meta.lat.toFixed(4)}°N, ${meta.lon.toFixed(4)}°W · Elevation: ${meta.elevation_m}m`
   );
 
   // AQI Breakdown & Dominant Pollutant (Point B)
@@ -864,10 +866,10 @@ function renderCurrentObservation(meta, forecast) {
   const domLabel =
     curr.dominant_pollutant_label ||
     (subPm25 >= subO3 && subPm25 >= subPm10
-      ? "Bụi mịn PM2.5"
+      ? "PM2.5 (Fine Particulates)"
       : subO3 >= subPm10
-      ? "Khí Ozone (O₃)"
-      : "Bụi thô PM10");
+      ? "Ground-Level Ozone (O₃)"
+      : "PM10 (Coarse Particulates)");
   setText("dominant-pollutant-badge", domLabel);
 
   setText("val-subindex-pm25", Math.round(subPm25));
@@ -964,8 +966,8 @@ function renderHorizonCards() {
           </div>
           <div class="flex items-baseline gap-1.5 mt-0.5">
             <span class="text-[22px] leading-tight font-mono font-bold hz-val text-slate-100">${fmtNum(val)}</span>
-            <span class="text-[10.5px] font-mono ${deltaColor}" title="Chênh lệch so với AQI hiện tại">[${fmtSigned(deltaCurr)}]</span>
-            ${hasSim ? `<span class="ml-auto hz-delta-chip ${simCls}" title="Chênh lệch do kịch bản What-If">What-If ${fmtSigned(simDelta)}</span>` : ""}
+            <span class="text-[10.5px] font-mono ${deltaColor}" title="Delta vs current AQI">[${fmtSigned(deltaCurr)}]</span>
+            ${hasSim ? `<span class="ml-auto hz-delta-chip ${simCls}" title="Delta from What-If simulation">What-If ${fmtSigned(simDelta)}</span>` : ""}
           </div>
           <div class="text-[10px] font-mono text-slate-500 truncate" title="${horizonSubtitles[hk]} · ${modelUsed}">
             ${horizonSubtitles[hk]} · <span class="text-slate-300 font-sans">${modelUsed}</span>
@@ -1064,7 +1066,7 @@ function renderLiveTrajectoryChart(isUpdate = false) {
 
   // Shaded band for uncertainty
   series.push({
-    name: "Dải tin cậy 90% (CI)",
+    name: "90% Confidence Interval (CI)",
     type: "line",
     stack: "prediction-ci",
     symbol: "none",
@@ -1102,7 +1104,7 @@ function renderLiveTrajectoryChart(isUpdate = false) {
       z: m.isPrimary ? 3 : 2,
     };
 
-    // Point C: Add horizontal AQI Hiện Tại baseline to Voting Ensemble
+    // Point C: Add horizontal Current AQI baseline to Voting Ensemble
     if (isEnsemble) {
       lineObj.markLine = {
         symbol: ["none", "none"],
@@ -1110,7 +1112,7 @@ function renderLiveTrajectoryChart(isUpdate = false) {
         label: {
           show: true,
           position: "insideEndTop",
-          formatter: `AQI Hiện Tại: ${Math.round(currAqi)}`,
+          formatter: `Current AQI: ${Math.round(currAqi)}`,
           fontSize: 10,
           fontFamily: "JetBrains Mono, monospace",
           color: isLight ? "#475569" : "#94a3b8",
@@ -1129,8 +1131,8 @@ function renderLiveTrajectoryChart(isUpdate = false) {
 
   // Ghost baselines (pre-What-If) so the simulated shift is visible in place.
   const ghosts = [
-    { key: "LSTM (PyTorch)", name: "LSTM · cơ sở", color: isLight ? "#7c3aed" : "#a78bfa" },
-    { key: "Voting Ensemble", name: "Ensemble · cơ sở", color: isLight ? "#059669" : "#34d399" },
+    { key: "LSTM (PyTorch)", name: "LSTM · Baseline", color: isLight ? "#7c3aed" : "#a78bfa" },
+    { key: "Voting Ensemble", name: "Ensemble · Baseline", color: isLight ? "#059669" : "#34d399" },
   ];
   ghosts.forEach((g) => {
     series.push({
@@ -1151,14 +1153,14 @@ function renderLiveTrajectoryChart(isUpdate = false) {
   if (viewMode === "rec") {
     legendSelected["Voting Ensemble"] = true;
     legendSelected["LSTM (PyTorch)"] = true;
-    legendSelected["Dải tin cậy 90% (CI)"] = true;
+    legendSelected["90% Confidence Interval (CI)"] = true;
     legendSelected["LightGBM"] = false;
     legendSelected["MLP (64, 32)"] = false;
     legendSelected["Ridge Regression"] = false;
   } else if (viewMode === "all") {
     legendSelected["Voting Ensemble"] = true;
     legendSelected["LSTM (PyTorch)"] = true;
-    legendSelected["Dải tin cậy 90% (CI)"] = true;
+    legendSelected["90% Confidence Interval (CI)"] = true;
     legendSelected["LightGBM"] = true;
     legendSelected["MLP (64, 32)"] = true;
     legendSelected["Ridge Regression"] = true;
@@ -1185,16 +1187,16 @@ function renderLiveTrajectoryChart(isUpdate = false) {
         const idx = params[0].dataIndex;
         const row = traj[idx];
         let html = `<div style="font-weight:700; margin-bottom:4px; font-family: Inter, sans-serif; color:${tc.tooltip.textStyle.color};">${row.step} — ${row.time}</div>`;
-        html += `<div style="font-size:11px; color:${tc.text}; margin-bottom:5px;">Nhiệt độ: ${row.temp_c}°C · Gió: ${row.wind_kmh} km/h · Độ ẩm: ${row.rh_pct}%</div>`;
+        html += `<div style="font-size:11px; color:${tc.text}; margin-bottom:5px;">Temperature: ${row.temp_c}°C · Wind: ${row.wind_kmh} km/h · Humidity: ${row.rh_pct}%</div>`;
         if (row.ci_lower !== undefined && row.ci_upper !== undefined) {
           html += `<div style="font-size:10.5px; color:${tc.isLight ? "#059669" : "#34d399"}; font-family: 'JetBrains Mono', monospace; margin-bottom: 4px;">
-            Dải 90% CI: [${row.ci_lower} — ${row.ci_upper}] AQI
+            90% CI: [${row.ci_lower} — ${row.ci_upper}] AQI
           </div>`;
         }
         params.forEach((p) => {
           if (p.value === undefined || p.value === null || p.seriesName === "ci-lower-base") return;
-          const isGhost = p.seriesName.includes("cơ sở");
-          const isCI = p.seriesName.includes("Dải tin cậy");
+          const isGhost = p.seriesName.includes("Baseline");
+          const isCI = p.seriesName.includes("Confidence Interval");
           if (isCI) return;
           html += `<div style="display:flex; justify-content:space-between; gap:12px; font-size:11px; ${isGhost ? "opacity:.6;" : ""}">
             <span>${p.marker} ${p.seriesName}</span>
@@ -1206,7 +1208,7 @@ function renderLiveTrajectoryChart(isUpdate = false) {
     },
     legend: {
       top: 0,
-      data: ["Dải tin cậy 90% (CI)", ...modelConfigs.map((m) => m.key)],
+      data: ["90% Confidence Interval (CI)", ...modelConfigs.map((m) => m.key)],
       itemWidth: 14,
       itemHeight: 8,
       selected: Object.keys(legendSelected).length > 0 ? legendSelected : undefined,
@@ -1268,12 +1270,12 @@ function renderHistoricalHeatmap(hm) {
 
   const tc = getChartThemeColors();
 
-  setText("hm-kpi-peak-time", `${hm.peak.day} lúc ${hm.peak.hour}`);
+  setText("hm-kpi-peak-time", `${hm.peak.day} at ${hm.peak.hour}`);
   setText("hm-kpi-peak-val", `${hm.peak.aqi} AQI`);
-  setText("hm-kpi-clean-time", `${hm.cleanest.day} lúc ${hm.cleanest.hour}`);
+  setText("hm-kpi-clean-time", `${hm.cleanest.day} at ${hm.cleanest.hour}`);
   setText("hm-kpi-clean-val", `${hm.cleanest.aqi} AQI`);
-  setText("heatmap-summary-peak", `Đỉnh: ${hm.peak.day} ${hm.peak.hour} (${hm.peak.aqi} AQI)`);
-  setText("heatmap-summary-clean", `Sạch: ${hm.cleanest.day} ${hm.cleanest.hour} (${hm.cleanest.aqi} AQI)`);
+  setText("heatmap-summary-peak", `Peak: ${hm.peak.day} ${hm.peak.hour} (${hm.peak.aqi} AQI)`);
+  setText("heatmap-summary-clean", `Cleanest: ${hm.cleanest.day} ${hm.cleanest.hour} (${hm.cleanest.aqi} AQI)`);
 
   const option = {
     backgroundColor: "transparent",
@@ -1289,9 +1291,9 @@ function renderHistoricalHeatmap(hm) {
           <div style="font-family: Inter, sans-serif; font-size: 11px;">
             <div style="font-weight: 700; color: ${tc.tooltip.textStyle.color}; margin-bottom: 3px;">${d} — ${h}</div>
             <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-bottom: 3px;">
-              AQI Trung Bình: <strong style="color: ${theme.hex}; font-size: 13px;">${val.toFixed(1)}</strong>
+              Average AQI: <strong style="color: ${theme.hex}; font-size: 13px;">${val.toFixed(1)}</strong>
             </div>
-            <div style="font-size: 10.5px; color: ${tc.text};">Cấp độ: <span style="color: ${theme.hex}; font-weight: 600;">${theme.label}</span></div>
+            <div style="font-size: 10.5px; color: ${tc.text};">Category: <span style="color: ${theme.hex}; font-weight: 600;">${theme.label}</span></div>
           </div>
         `;
       },
@@ -1412,19 +1414,19 @@ function renderLiveShapChart(isUpdate = false) {
         const sign = it.shap >= 0 ? `+${it.shap}` : `${it.shap}`;
         const desc =
           it.shap >= 0
-            ? "Làm tăng nồng độ ô nhiễm"
-            : "Làm giảm nồng độ ô nhiễm";
+            ? "Increases air pollution"
+            : "Decreases air pollution";
         return `
           <div style="font-weight:700; margin-bottom:3px; font-family: Inter, sans-serif; color:${tc.tooltip.textStyle.color};">${it.label}</div>
-          <div style="font-size:11px; color:${tc.text};">Giá trị đo đạc: <strong style="color:${tc.tooltip.textStyle.color};">${it.value}</strong></div>
-          <div style="font-size:11px; color:${tc.text};">Mức độ tác động: <strong style="color:${it.shap >= 0 ? "#fb7185" : "#34d399"};">${sign} AQI</strong> (${desc})</div>
+          <div style="font-size:11px; color:${tc.text};">Observed value: <strong style="color:${tc.tooltip.textStyle.color};">${it.value}</strong></div>
+          <div style="font-size:11px; color:${tc.text};">Impact on AQI: <strong style="color:${it.shap >= 0 ? "#fb7185" : "#34d399"};">${sign} AQI</strong> (${desc})</div>
         `;
       },
     },
     grid: { left: 4, right: 36, top: 4, bottom: 20, containLabel: true },
     xAxis: {
       type: "value",
-      name: "Mức tác động (AQI)",
+      name: "Impact (AQI)",
       nameLocation: "middle",
       nameGap: 18,
       nameTextStyle: { color: tc.text, fontSize: 10, fontFamily: "JetBrains Mono, monospace" },
@@ -1510,7 +1512,7 @@ function resetWhatIfSlidersToCurrent(curr) {
 
   const deltaBadge = byId("wi-delta-badge");
   if (deltaBadge) {
-    deltaBadge.textContent = "Trạng thái thực tế";
+    deltaBadge.textContent = "Observed baseline";
     deltaBadge.className = "text-[10.5px] font-mono font-semibold text-slate-400";
   }
 }
@@ -1530,12 +1532,12 @@ function setWhatIfChip(state, latencyMs) {
   chip.classList.remove("is-pending", "is-sim");
   if (state === "pending") {
     chip.classList.add("is-pending");
-    chip.textContent = "Đang suy luận…";
+    chip.textContent = "Inferring…";
   } else if (state === "sim") {
     chip.classList.add("is-sim");
-    chip.textContent = latencyMs != null ? `Mô phỏng · ${Math.round(latencyMs)}ms` : "Mô phỏng";
+    chip.textContent = latencyMs != null ? `Simulated · ${Math.round(latencyMs)}ms` : "Simulated";
   } else {
-    chip.textContent = "Thực tế";
+    chip.textContent = "Observed";
   }
 }
 
@@ -1599,7 +1601,7 @@ async function runWhatIfSimulation() {
     setWhatIfChip("actual");
     const deltaBadge = byId("wi-delta-badge");
     if (deltaBadge) {
-      deltaBadge.textContent = "Trạng thái thực tế";
+      deltaBadge.textContent = "Observed baseline";
       deltaBadge.className = "text-[10.5px] font-mono font-semibold text-slate-400";
     }
     rerenderSimulationViews();
@@ -1642,7 +1644,7 @@ async function runWhatIfSimulation() {
 
     const deltaBadge = byId("wi-delta-badge");
     if (deltaBadge) {
-      deltaBadge.textContent = `Tác động ngày mai: ${fmtSigned(diff24)} AQI`;
+      deltaBadge.textContent = `24h Impact: ${fmtSigned(diff24)} AQI`;
       const isLight = APP_STATE.theme === "light";
       const color = diff24 > 0.05
         ? (isLight ? "text-rose-600 font-bold" : "text-rose-400 font-bold")
@@ -1719,12 +1721,12 @@ async function toggleWildfireSimulation(isFireActive) {
       const chip = byId("wi-status-chip");
       if (chip) {
         chip.className = "wi-chip is-sim !bg-rose-950 !text-rose-300 !border-rose-600";
-        chip.textContent = "🔥 Cháy rừng";
+        chip.textContent = "🔥 Wildfire";
       }
 
       const deltaBadge = byId("wi-delta-badge");
       if (deltaBadge) {
-        deltaBadge.textContent = "⚠️ Khói cháy rừng: AQI > 300 (Hazardous)";
+        deltaBadge.textContent = "⚠️ Wildfire smoke: AQI > 300 (Hazardous)";
         deltaBadge.className = "text-[10.5px] font-mono font-bold text-rose-400";
       }
 
@@ -1817,12 +1819,12 @@ function renderWhatIfImpact() {
 
 function formatTriggerType(trigger) {
   const map = {
-    auto_worker_24_7: "Tự động (Hàng giờ)",
-    manual_force: "Làm mới thủ công",
-    user_request: "Truy vấn trực tiếp",
-    what_if: "Giả lập kịch bản",
-    cache_hit: "Đọc bộ nhớ đệm",
-    offline_fallback: "Dữ liệu dự phòng",
+    auto_worker_24_7: "Automatic (Hourly)",
+    manual_force: "Manual Refresh",
+    user_request: "Direct Query",
+    what_if: "What-If Simulation",
+    cache_hit: "Cache Hit",
+    offline_fallback: "Fallback Store",
   };
   return map[trigger] || trigger;
 }
@@ -1837,10 +1839,10 @@ function formatRegionName(regionKey) {
 }
 
 function formatActiveSources(sources) {
-  if (!sources || sources.length === 0) return "Không xác định";
+  if (!sources || sources.length === 0) return "Unknown";
   const names = sources.map((s) => {
-    if (s === "FRES" || s === "LA") return "Trạm mặt đất EPA";
-    if (s.includes("OPENMETEO")) return "Mô hình khí quyển";
+    if (s === "FRES" || s === "LA") return "EPA Ground Station";
+    if (s.includes("OPENMETEO")) return "Atmospheric Model";
     return s;
   });
   return [...new Set(names)].join(" + ");
@@ -1928,19 +1930,19 @@ function updateWhatIfSummaryPill() {
 
   if (isMod) {
     if (stateEl) {
-      stateEl.textContent = "Kịch bản";
+      stateEl.textContent = "Simulation";
       stateEl.className = "text-amber-400 font-semibold";
     }
     if (metricsEl) {
-      metricsEl.textContent = `Gió ${w}k · ${t}°C · ${rh}% · ${rain}mm (Đang mô phỏng)`;
+      metricsEl.textContent = `Wind ${w}k · ${t}°C · ${rh}% · ${rain}mm (Simulated)`;
     }
   } else {
     if (stateEl) {
-      stateEl.textContent = "Thực tế";
+      stateEl.textContent = "Observed";
       stateEl.className = "text-emerald-400 font-semibold";
     }
     if (metricsEl) {
-      metricsEl.textContent = `Gió ${w}km/h · ${t}°C · ${rh}% · 0 biến thiên`;
+      metricsEl.textContent = `Wind ${w}km/h · ${t}°C · ${rh}% · 0 variance`;
     }
   }
 }
@@ -1953,7 +1955,7 @@ function updateShapSummaryPill(shapObj) {
   if (top) {
     const sign = top.shap >= 0 ? `+${top.shap.toFixed(1)}` : `${top.shap.toFixed(1)}`;
     const col = top.shap >= 0 ? "text-rose-400" : "text-emerald-400";
-    textEl.innerHTML = `Base: <strong class="text-slate-100">${shapObj.base_value.toFixed(1)}</strong> │ Tác động chính: <strong class="${col}">${top.label} (${sign})</strong>`;
+    textEl.innerHTML = `Base: <strong class="text-slate-100">${shapObj.base_value.toFixed(1)}</strong> │ Dominant Factor: <strong class="${col}">${top.label} (${sign})</strong>`;
   }
 }
 
@@ -1965,7 +1967,7 @@ function toggleSysLogDrawer(force) {
   APP_STATE.syslogOpen = open;
   byId("syslog-drawer")?.classList.toggle("is-open", open);
   byId("syslog-toggle")?.setAttribute("aria-expanded", open ? "true" : "false");
-  setText("syslog-toggle-label", open ? "Thu gọn" : "Mở nhật ký");
+  setText("syslog-toggle-label", open ? "Collapse" : "Open logs");
 }
 
 function renderSysLogStatus(logs) {
@@ -1999,8 +2001,8 @@ function renderFetchHistoryTable(logs) {
     .map((r) => {
       const apiBadge =
         r.api_called === 1
-          ? `<span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-950 text-blue-300 border border-blue-800">Trực tiếp</span>`
-          : `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">Bộ đệm tối ưu</span>`;
+          ? `<span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-950 text-blue-300 border border-blue-800">Direct API</span>`
+          : `<span class="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700">Cached Read</span>`;
 
       return `
         <tr>
@@ -2094,12 +2096,12 @@ async function reloadMissingDates() {
   try {
     const res = await fetch("/api/reload-missing-dates", { method: "POST" });
     const json = await res.json();
-    console.log("Đồng bộ ngày khuyết:", json);
+    console.log("Sync missing dates:", json);
     await loadDashboardWindow();
-    alert(`[Đồng bộ dữ liệu]\n${json.message}\nTổng bản ghi kho dự báo: ${json.total_records_1h ? json.total_records_1h.toLocaleString() : "--"} dòng.`);
+    alert(`[Data Sync]\n${json.message}\nTotal warehouse forecast records: ${json.total_records_1h ? json.total_records_1h.toLocaleString() : "--"} rows.`);
   } catch (err) {
-    console.error("Lỗi khi tải lại ngày khuyết:", err);
-    alert("Không thể tải lại ngày khuyết. Vui lòng kiểm tra kết nối mạng.");
+    console.error("Error reloading missing dates:", err);
+    alert("Could not reload missing dates. Please check network connection.");
   } finally {
     if (btn) btn.classList.remove("animate-spin");
   }
@@ -2177,7 +2179,7 @@ function toggleResidualMode() {
   const btn = byId("btn-toggle-residual");
   if (btn) {
     btn.classList.toggle("is-active", APP_STATE.win2.residualMode);
-    btn.textContent = APP_STATE.win2.residualMode ? "Xem Giá Trị Thực Tế" : "Xem Sai Số Dự Báo";
+    btn.textContent = APP_STATE.win2.residualMode ? "View Actual Observations" : "View Forecast Residuals";
   }
   renderAllStationWindowCharts();
 }
@@ -2261,13 +2263,13 @@ function renderKpiCards(data) {
     setText("kpi-leader-sub", `${top.family} · ${scLabel} · ${regionLabel}`);
   } else {
     setText("kpi-leader-name", "--");
-    setText("kpi-leader-sub", "Không có dữ liệu trong cửa sổ");
+    setText("kpi-leader-sub", "No data in selected window");
   }
 
   // [Best MAE]
   if (top) {
     setText("kpi-mae-val", top.MAE.toFixed(2));
-    const gap = second ? ` · hơn #2 ${(second.MAE - top.MAE).toFixed(2)}` : "";
+    const gap = second ? ` · +${(second.MAE - top.MAE).toFixed(2)} vs #2` : "";
     setText("kpi-mae-sub", `RMSE ${top.RMSE.toFixed(2)} · R² ${top.R2.toFixed(3)}${gap}`);
   } else {
     setText("kpi-mae-val", "--");
@@ -2280,7 +2282,7 @@ function renderKpiCards(data) {
   let days = "";
   if (data.start_date && data.end_date) {
     const n = Math.round((new Date(data.end_date) - new Date(data.start_date)) / 86400000) + 1;
-    if (Number.isFinite(n) && n > 0) days = ` · ${n} ngày`;
+    if (Number.isFinite(n) && n > 0) days = ` · ${n} days`;
   }
   setText("kpi-hours-sub", `${data.start_date} → ${data.end_date}${days}`);
 
@@ -2290,7 +2292,7 @@ function renderKpiCards(data) {
   const pct = total > 0 ? ((extreme / total) * 100).toFixed(1) : "0.0";
   setText(
     "kpi-extreme-sub",
-    extreme > 0 ? `${pct}% thời lượng quan sát · cảnh báo khói/nghịch nhiệt` : "Không ghi nhận giờ ô nhiễm cực đoan"
+    extreme > 0 ? `${pct}% of observation hours · smoke / inversion alert` : "No extreme pollution hours recorded"
   );
   const isLight = APP_STATE.theme === "light";
   const exCard = byId("kpi-card-extreme");
@@ -2336,8 +2338,8 @@ function renderAllStationWindowCharts() {
     ch.resize();
 
     if (stObj.empty || !stObj.timestamps || stObj.timestamps.length === 0) {
-      metaEl.textContent = "Không có bản ghi phù hợp với tiêu chí lọc.";
-      badgesEl.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-500">0 bản ghi</span>`;
+      metaEl.textContent = "No records match the filter criteria.";
+      badgesEl.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-500">0 records</span>`;
       ch.clear();
       return;
     }
@@ -2355,17 +2357,17 @@ function renderAllStationWindowCharts() {
       panelEl.style.setProperty("--station-border-tint", meanTheme.borderLight);
     }
 
-    metaEl.textContent = `${formatActiveSources(stObj.active_sources)} · ${stObj.record_count.toLocaleString()} giờ`;
-    metaEl.title = `Nguồn: ${formatActiveSources(stObj.active_sources)} · Quan trắc: ${stObj.record_count.toLocaleString()} giờ`;
+    metaEl.textContent = `${formatActiveSources(stObj.active_sources)} · ${stObj.record_count.toLocaleString()} hours`;
+    metaEl.title = `Sources: ${formatActiveSources(stObj.active_sources)} · Observations: ${stObj.record_count.toLocaleString()} hours`;
     badgesEl.innerHTML = `
       <span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium border"
         style="background: ${isLight ? meanTheme.bgLight : 'rgba(15, 23, 42, 0.8)'}; border-color: ${isLight ? meanTheme.borderLight : '#334155'}; color: ${isLight ? meanTheme.textLight : '#cbd5e1'};"
-        title="AQI trung bình trong khoảng thời gian lọc">
-        TB <strong style="color: ${isLight ? meanTheme.textLight : meanTheme.hex}">${stObj.mean_aqi}</strong> [${meanTheme.short}]
+        title="Average AQI in selected time window">
+        Avg <strong style="color: ${isLight ? meanTheme.textLight : meanTheme.hex}">${stObj.mean_aqi}</strong> [${meanTheme.short}]
       </span>
       <span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium border"
         style="background: ${isLight ? maxTheme.bgLight : 'rgba(15, 23, 42, 0.8)'}; border-color: ${isLight ? maxTheme.borderLight : '#334155'}; color: ${isLight ? maxTheme.textLight : '#cbd5e1'};"
-        title="AQI cao nhất ghi nhận">
+        title="Peak AQI recorded">
         Max <strong style="color: ${isLight ? maxTheme.textLight : maxTheme.hex}">${stObj.max_aqi}</strong>
       </span>
     `;
@@ -2374,7 +2376,7 @@ function renderAllStationWindowCharts() {
 
     if (!APP_STATE.win2.residualMode) {
       series.push({
-        name: "Thực tế (Actual AQI)",
+        name: "Observed (Actual AQI)",
         type: "line",
         data: stObj.actual,
         symbol: "none",
@@ -2385,7 +2387,7 @@ function renderAllStationWindowCharts() {
 
       if (stObj.dual_openmeteo_actual) {
         series.push({
-          name: "Thực tế (Mô hình khí quyển)",
+          name: "Observed (Atmospheric Model)",
           type: "line",
           data: stObj.dual_openmeteo_actual,
           symbol: "none",
@@ -2457,7 +2459,7 @@ function renderAllStationWindowCharts() {
       },
       yAxis: {
         type: "value",
-        name: APP_STATE.win2.residualMode ? "Sai số tuyệt đối" : "AQI",
+        name: APP_STATE.win2.residualMode ? "Absolute Residual" : "AQI",
         nameTextStyle: { color: tc.text, fontSize: 10, fontFamily: "JetBrains Mono, monospace" },
         axisLabel: { color: tc.text, fontSize: 10, fontFamily: "JetBrains Mono, monospace" },
         splitLine: { lineStyle: { color: tc.splitLineColor } },
@@ -2473,26 +2475,26 @@ function renderHeadToHeadBattle(b) {
   if (!b || !b.total_hours) {
     byId("battle-win-bar").style.width = "50%";
     setText("battle-win-rate", "--%");
-    setText("battle-hours-count", "0 giờ");
+    setText("battle-hours-count", "0 hours");
     setText("battle-lstm-mae", "-- AQI");
     setText("battle-mlp-mae", "-- AQI");
-    setText("battle-summary-box", "Không đủ dữ liệu trong cửa sổ đang chọn để so sánh hai mô hình.");
+    setText("battle-summary-box", "Insufficient data in selected window to compare models.");
     return;
   }
   byId("battle-win-bar").style.width = `${b.lstm_win_rate_pct}%`;
   setText("battle-win-rate", `${b.lstm_win_rate_pct}%`);
   setText(
     "battle-hours-count",
-    `${b.lstm_wins_count.toLocaleString()} / ${b.total_hours.toLocaleString()} giờ`
+    `${b.lstm_wins_count.toLocaleString()} / ${b.total_hours.toLocaleString()} hours`
   );
   setText("battle-lstm-mae", `${b.lstm_mae.toFixed(2)} AQI`);
   setText("battle-mlp-mae", `${b.mlp_mae.toFixed(2)} AQI`);
 
   const summaryEl = byId("battle-summary-box");
   if (b.mae_saved >= 0) {
-    summaryEl.innerHTML = `Trên cửa sổ đã chọn, <strong>Spatio-Temporal LSTM</strong> đạt sai số thấp hơn <strong>-${b.mae_saved.toFixed(2)} điểm MAE</strong> (giảm <strong>${b.improvement_pct}%</strong>) so với mạng truyền thẳng <strong>MLP (64, 32)</strong>.`;
+    summaryEl.innerHTML = `Across the selected window, <strong>Spatio-Temporal LSTM</strong> achieved lower prediction error by <strong>-${b.mae_saved.toFixed(2)} MAE</strong> (a <strong>${b.improvement_pct}%</strong> reduction) compared to Feedforward <strong>MLP (64, 32)</strong>.`;
   } else {
-    summaryEl.innerHTML = `Trên cửa sổ ngắn hạn này, hai mô hình Deep Learning có hiệu năng tương đương (chênh lệch ${Math.abs(b.mae_saved).toFixed(2)} MAE).`;
+    summaryEl.innerHTML = `Across this short-term window, both Deep Learning models performed comparably (difference of ${Math.abs(b.mae_saved).toFixed(2)} MAE).`;
   }
 }
 
@@ -2502,12 +2504,12 @@ function renderDynamicLeaderboard(data) {
   if (!tbody || !data) return;
 
   if (subEl) {
-    subEl.textContent = `Khoảng: ${data.start_date} → ${data.end_date} · Tổng ${data.total_window_records.toLocaleString()} mẫu quan trắc · Số giờ ô nhiễm cực đoan (AQI > 150): ${data.extreme_hours_150} giờ`;
+    subEl.textContent = `Window: ${data.start_date} → ${data.end_date} · Total ${data.total_window_records.toLocaleString()} observations · Extreme pollution hours (AQI > 150): ${data.extreme_hours_150} hours`;
     subEl.title = subEl.textContent;
   }
 
   if (!data.leaderboard || data.leaderboard.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="9" class="text-center text-slate-500 py-6 font-sans">Không có dữ liệu đánh giá cho cửa sổ đang chọn.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center text-slate-500 py-6 font-sans">No evaluation records available for the selected window.</td></tr>`;
     return;
   }
 
@@ -2548,7 +2550,7 @@ function renderDynamicLeaderboard(data) {
           <td class="text-right text-slate-300">${r.RMSE.toFixed(2)}</td>
           <td class="text-right text-slate-300">${r.R2.toFixed(4)}</td>
           <td class="text-right text-slate-400">${r.sMAPE.toFixed(2)}%</td>
-          <td class="text-right text-slate-300">${r.F1_150 !== null ? r.F1_150.toFixed(4) : '<span class="text-slate-600 font-sans">Không xảy ra</span>'}</td>
+          <td class="text-right text-slate-300">${r.F1_150 !== null ? r.F1_150.toFixed(4) : '<span class="text-slate-600 font-sans">N/A</span>'}</td>
           <td class="text-right text-slate-400">${r.max_error.toFixed(1)}</td>
         </tr>
       `;

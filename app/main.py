@@ -19,9 +19,9 @@ worker_task = None
 
 async def hourly_background_worker():
     """
-    Background worker chạy liên tục trên Server 24/7:
-    Mỗi 60 phút tự động kiểm tra và đồng bộ dữ liệu từ Open-Meteo cho 3 khu vực
-    nếu bộ đệm đã hết hạn, giúp lịch sử thu thập không bao giờ bị đứt quãng.
+    24/7 background worker:
+    Every 60 minutes checks and syncs observations from Open-Meteo across 3 regions
+    if cache is expired, ensuring continuous collection history.
     """
     await asyncio.sleep(3)
     while True:

@@ -19,7 +19,7 @@ STATION_META = {
         "lat": 36.7854,
         "lon": -119.7732,
         "elevation_m": 102,
-        "topography_desc": "Lòng chảo thung lũng San Joaquin bị bao bọc bởi dãy Sierra Nevada và Coast Ranges, dễ xảy ra nghịch nhiệt mùa đông và bẫy khói cháy rừng.",
+        "topography_desc": "San Joaquin Valley basin enclosed by Sierra Nevada and Coast Ranges, prone to winter thermal inversions and wildfire smoke trapping.",
     },
     "LA": {
         "region": "Los Angeles",
@@ -30,7 +30,7 @@ STATION_META = {
         "lat": 34.0664,
         "lon": -118.2268,
         "elevation_m": 87,
-        "topography_desc": "Đô thị mật độ cao ven Thái Bình Dương, chịu tác động giao thoa giữa gió biển ban ngày, bức tường núi San Gabriel và gió khô nóng Santa Ana.",
+        "topography_desc": "Coastal Pacific metropolis bounded by the San Gabriel Mountains, shaped by daytime sea breezes and dry hot Santa Ana winds.",
     },
     "SJ": {
         "region": "San Jose",
@@ -41,7 +41,7 @@ STATION_META = {
         "lat": 37.3382,
         "lon": -121.8863,
         "elevation_m": 26,
-        "topography_desc": "Cực nam vùng vịnh San Francisco, thông thoáng hơn nhờ luồng gió biển tự nhiên nhưng vẫn tích tụ khí thải đô thị vào giờ cao điểm.",
+        "topography_desc": "Southern terminus of San Francisco Bay, naturally ventilated by maritime airflow but subject to urban rush-hour emission concentration.",
     },
 }
 
@@ -54,40 +54,40 @@ STATION_MAP = {
 }
 
 FEATURE_LABELS_VI = {
-    "target_aqi_lag_0": "AQI quan trắc hiện tại",
-    "target_aqi_lag_1": "AQI 1 giờ trước",
-    "target_aqi_lag_2": "AQI 2 giờ trước",
-    "target_aqi_lag_3": "AQI 3 giờ trước",
-    "target_aqi_lag_24": "AQI cùng giờ hôm qua",
-    "target_aqi_lag_48": "AQI 2 ngày trước",
-    "diff_1h": "Biến động AQI 1h gần nhất",
-    "roll_mean_3h": "AQI trung bình 3 giờ qua",
-    "roll_std_3h": "Độ biến động AQI 3h",
-    "roll_mean_24h": "AQI trung bình 24h qua",
-    "temperature_2m": "Nhiệt độ không khí (2m)",
-    "relative_humidity_2m": "Độ ẩm tương đối",
-    "rain": "Lượng mưa tích lũy",
-    "cloud_cover": "Độ che phủ mây",
-    "wind_speed_10m": "Tốc độ gió bề mặt",
-    "surface_pressure": "Áp suất khí quyển",
-    "wind_u": "Gió hướng Đông–Tây",
-    "wind_v": "Gió hướng Bắc–Nam",
-    "vpd_kpa": "Độ bốc hơi ẩm (VPD)",
-    "hour_sin": "Khung giờ trong ngày",
-    "hour_cos": "Chu kỳ ngày và đêm",
-    "month_sin": "Mùa khí hậu trong năm",
-    "month_cos": "Chu kỳ thời tiết năm",
-    "is_weekend": "Tác động ngày cuối tuần",
-    "station_id": "Vị trí và Lưu vực trạm",
-    "future_temp_2m": "Nhiệt độ dự báo (+24h)",
-    "future_rh_2m": "Độ ẩm dự báo (+24h)",
-    "future_wind_speed": "Tốc độ gió dự báo (+24h)",
-    "future_wind_u": "Gió Đông–Tây (+24h)",
-    "future_wind_v": "Gió Bắc–Nam (+24h)",
-    "future_rain": "Lượng mưa dự báo (+24h)",
-    "future_cloud_cover": "Độ che phủ mây (+24h)",
-    "future_surface_pressure": "Áp suất dự báo (+24h)",
-    "future_vpd_kpa": "Độ bốc hơi VPD (+24h)",
+    "target_aqi_lag_0": "Current Observed AQI",
+    "target_aqi_lag_1": "AQI 1 Hour Prior",
+    "target_aqi_lag_2": "AQI 2 Hours Prior",
+    "target_aqi_lag_3": "AQI 3 Hours Prior",
+    "target_aqi_lag_24": "AQI Same Hour Yesterday",
+    "target_aqi_lag_48": "AQI 2 Days Prior",
+    "diff_1h": "AQI Change Over Past Hour",
+    "roll_mean_3h": "3-Hour Rolling Mean AQI",
+    "roll_std_3h": "3-Hour AQI Volatility (Std)",
+    "roll_mean_24h": "24-Hour Rolling Mean AQI",
+    "temperature_2m": "Air Temperature (2m)",
+    "relative_humidity_2m": "Relative Humidity (2m)",
+    "rain": "Precipitation Accumulation",
+    "cloud_cover": "Cloud Cover Fraction",
+    "wind_speed_10m": "Surface Wind Speed (10m)",
+    "surface_pressure": "Surface Atmospheric Pressure",
+    "wind_u": "East-West Wind Component (U)",
+    "wind_v": "North-South Wind Component (V)",
+    "vpd_kpa": "Vapor Pressure Deficit (VPD)",
+    "hour_sin": "Time of Day (Sin Cycle)",
+    "hour_cos": "Time of Day (Cos Cycle)",
+    "month_sin": "Seasonal Climate Cycle (Sin)",
+    "month_cos": "Seasonal Climate Cycle (Cos)",
+    "is_weekend": "Weekend Activity Effect",
+    "station_id": "Station Location & Basin",
+    "future_temp_2m": "Forecast Temperature (+24h)",
+    "future_rh_2m": "Forecast Humidity (+24h)",
+    "future_wind_speed": "Forecast Wind Speed (+24h)",
+    "future_wind_u": "Forecast Wind U (+24h)",
+    "future_wind_v": "Forecast Wind V (+24h)",
+    "future_rain": "Forecast Rain (+24h)",
+    "future_cloud_cover": "Forecast Cloud Cover (+24h)",
+    "future_surface_pressure": "Forecast Surface Pressure (+24h)",
+    "future_vpd_kpa": "Forecast VPD (+24h)",
 }
 
 
@@ -552,12 +552,12 @@ class MultiModelInferenceEngine:
 
         if wildfire_mode:
             sub_pm25 = 312.0
-            dom_key, dom_name, dom_sub = ("pm25", "Khói bụi cháy rừng (PM2.5)", 312.0)
+            dom_key, dom_name, dom_sub = ("pm25", "Wildfire Smoke (PM2.5)", 312.0)
         else:
             pollutant_candidates = [
-                ("pm25", "Bụi mịn PM2.5", sub_pm25),
-                ("pm10", "Bụi thô PM10", sub_pm10),
-                ("ozone", "Khí Ozone (O₃)", sub_o3),
+                ("pm25", "PM2.5 (Fine Particulates)", sub_pm25),
+                ("pm10", "PM10 (Coarse Particulates)", sub_pm10),
+                ("ozone", "Ground-Level Ozone (O₃)", sub_o3),
             ]
             dom_key, dom_name, dom_sub = max(pollutant_candidates, key=lambda x: x[2])
 

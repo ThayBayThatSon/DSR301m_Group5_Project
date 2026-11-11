@@ -86,66 +86,66 @@ def ozone_to_epa_aqi(o3_ug_m3):
 WILDFIRE_PRESETS = [
     {
         "id": "latest_today",
-        "title": "Ngày Quan Trắc Mới Nhất (24h)",
+        "title": "Latest Observation (24h)",
         "badge": "Default",
         "start_date": "2026-11-10",
         "end_date": "2026-11-11",
         "source_mode": "seamless",
-        "description": "Hiển thị kết quả dự báo của 10 mô hình đối chiếu với thực tế trong ngày quan trắc mới nhất trên cả 3 trạm.",
+        "description": "Compare 10 model predictions against observations in the latest observation period across all 3 stations.",
     },
     {
         "id": "latest_7d",
-        "title": "7 Ngày Gần Nhất (11/2026)",
+        "title": "Recent 7 Days (11/2026)",
         "badge": "Recent 7D",
         "start_date": "2026-11-04",
         "end_date": "2026-11-11",
         "source_mode": "seamless",
-        "description": "Chuỗi 168 giờ liên tục tuần gần nhất từ Open-Meteo trên cả 3 lưu vực Fresno, Los Angeles và San Jose.",
+        "description": "Continuous 168-hour time series from Open-Meteo across Fresno, Los Angeles, and San Jose basins.",
     },
     {
         "id": "palisades_eaton_2025",
-        "title": "Cháy Rừng Palisades & Eaton (01/2025)",
+        "title": "Palisades & Eaton Fires (01/2025)",
         "badge": "Peak 312 AQI",
         "start_date": "2025-01-07",
         "end_date": "2025-01-14",
         "source_mode": "seamless",
-        "description": "Đám cháy tại Los Angeles tháng 1/2025 kết hợp gió Santa Ana đẩy AQI vọt lên 312.0 điểm.",
+        "description": "Wildfires in Los Angeles in January 2025 driven by Santa Ana winds pushed AQI up to 312.0.",
     },
     {
         "id": "july_smoke_2024",
-        "title": "Bão Khói & Sóng Nhiệt Mùa Hè (07/2024)",
+        "title": "Summer Heatwave & Smoke (07/2024)",
         "badge": "Peak 387 AQI",
         "start_date": "2024-07-03",
         "end_date": "2024-07-10",
         "source_mode": "seamless",
-        "description": "Giai đoạn giao thoa có đủ cả 2 nguồn dữ liệu (EPA AQS & Open-Meteo), đỉnh ô nhiễm tại LA đạt 387.1 AQI.",
+        "description": "Overlap period with both EPA AQS and Open-Meteo data available; peak pollution at LA reached 387.1 AQI.",
     },
     {
         "id": "dual_source_overlap_2023",
-        "title": "Giao Thoa 2 Nguồn EPA vs Open-Meteo (07/2023)",
+        "title": "Dual-Source Overlap: EPA vs Open-Meteo (07/2023)",
         "badge": "Dual-Source",
         "start_date": "2023-07-02",
         "end_date": "2023-07-09",
         "source_mode": "both_compare",
-        "description": "Kiểm tra trực diện sự khác biệt giữa trạm mặt đất EPA (FRES, LA) và nguồn Open-Meteo cùng thời điểm.",
+        "description": "Direct cross-comparison between EPA surface stations (FRES, LA) and Open-Meteo atmospheric analysis.",
     },
     {
         "id": "knp_windy_2021",
-        "title": "Cháy Rừng KNP Complex & Windy Fire (10/2021)",
+        "title": "KNP Complex & Windy Fire (10/2021)",
         "badge": "Peak 222 AQI",
         "start_date": "2021-09-28",
         "end_date": "2021-10-05",
         "source_mode": "seamless",
-        "description": "Khói cháy rừng từ rừng quốc gia Sequoia bị bẫy trong lòng chảo San Joaquin Valley (Fresno).",
+        "description": "Wildfire smoke from Sequoia National Forest trapped in the San Joaquin Valley basin (Fresno).",
     },
     {
         "id": "creek_august_2020",
-        "title": "Creek Fire — Thung Lũng San Joaquin (09/2020)",
+        "title": "Creek Fire — San Joaquin Valley (09/2020)",
         "badge": "Peak 390 AQI",
         "start_date": "2020-09-10",
         "end_date": "2020-09-18",
         "source_mode": "seamless",
-        "description": "Đợt cháy rừng quy mô lớn tại Sierra National Forest làm AQI tại Fresno vọt lên 389.8 điểm nhiều ngày liền.",
+        "description": "Large-scale wildfire in Sierra National Forest causing AQI at Fresno to exceed 389.8 for multiple days.",
     },
     {
         "id": "camp_fire_2018",
@@ -154,7 +154,7 @@ WILDFIRE_PRESETS = [
         "start_date": "2018-11-15",
         "end_date": "2018-11-22",
         "source_mode": "seamless",
-        "description": "Đám cháy Camp Fire tháng 11/2018 gây ô nhiễm diện rộng khắp thung lũng miền Trung California.",
+        "description": "Camp Fire in November 2018 causing widespread air pollution across Northern and Central California valleys.",
     },
 ]
 
@@ -252,9 +252,9 @@ class AQIDataManager:
 
     def reload_precomputed_stores(self):
         """
-        Kiểm tra giờ mới nhất trong dataset.
-        Nếu thiếu giờ so với thời điểm hiện tại, tự động gọi Open-Meteo tải bù và tái tạo Parquet cache.
-        Nếu đã đủ, nạp lại kho vào RAM và trả về xác nhận.
+        Check latest timestamp in dataset.
+        If hours are missing relative to current time, fetch from Open-Meteo and rebuild cache.
+        Reload data into RAM and return confirmation.
         """
         now_dt = datetime.now()
         now_date_str = now_dt.strftime("%Y-%m-%d")
@@ -264,7 +264,7 @@ class AQIDataManager:
             self.load_precomputed_stores()
             return {
                 "status": "success",
-                "message": "Đã tải lại kho dữ liệu thành công.",
+                "message": "Data warehouse reloaded successfully.",
                 "total_records_1h": len(self.df_1h) if self.df_1h is not None else 0,
                 "total_records_24h": len(self.df_24h) if self.df_24h is not None else 0,
             }
@@ -359,13 +359,13 @@ class AQIDataManager:
                     except Exception as e_pq:
                         print(f"[Sync] Error rebuilding parquet cache: {e_pq}")
 
-        # Tái nạp dữ liệu vào bộ nhớ
+        # Reload data into memory
         self.load_precomputed_stores()
 
         msg = (
-            f"Đã phát hiện và tải thêm {fetched_count} giờ khuyết mới nhất từ Open-Meteo, đồng bộ hoàn tất vào kho dự báo."
+            f"Detected and downloaded {fetched_count} latest missing hourly records from Open-Meteo, forecast store synchronized."
             if fetched_count > 0
-            else f"Kho dữ liệu đã được cập nhật đầy đủ và liên tục đến {max_time_str} (0 khoảng khuyết)."
+            else f"Data warehouse is fully up to date through {max_time_str} (0 missing hours)."
         )
         return {
             "status": "success",
@@ -386,7 +386,7 @@ class AQIDataManager:
             df = df.dropna(subset=["time_dt", "target_aqi"])
             df["day_idx"] = df["time_dt"].dt.dayofweek  # 0=Monday, 6=Sunday
             df["hour"] = df["time_dt"].dt.hour
-            day_names = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"]
+            day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
             hour_labels = [f"{h:02d}:00" for h in range(24)]
 
             mapping = {
@@ -524,7 +524,7 @@ class AQIDataManager:
                     "ttl_remaining_seconds": max(0, int(self.CACHE_TTL_SEC - age_sec)),
                     "cooldown_remaining_seconds": cooldown_left,
                     "last_fetched_at": last_real["fetched_at"],
-                    "message": f"Dữ liệu vừa được cập nhật gần đây. Bạn có thể làm mới tiếp sau {cooldown_left} giây.",
+                    "message": f"Data was recently updated. You can refresh again in {cooldown_left}s.",
                 }
 
             # Standard Cache Hit within 60-minute TTL
@@ -568,7 +568,7 @@ class AQIDataManager:
                     "ttl_remaining_seconds": max(0, int(self.CACHE_TTL_SEC - age_sec)),
                     "cooldown_remaining_seconds": max(0, int(self.COOLDOWN_SEC - age_sec)),
                     "last_fetched_at": last_real["fetched_at"],
-                    "message": f"Dữ liệu quan trắc trạm sẵn sàng (cập nhật cách đây {int(age_sec // 60)} phút).",
+                    "message": f"Station observation data ready (updated {int(age_sec // 60)} min ago).",
                 }
 
         # Otherwise call Open-Meteo Live API (past 3 days + forecast 2 days)
@@ -647,7 +647,7 @@ class AQIDataManager:
                 "cooldown_remaining_seconds": self.COOLDOWN_SEC,
                 "last_fetched_at": now_iso,
                 "trigger_type": actual_trigger,
-                "message": "Đã cập nhật dữ liệu quan trắc bề mặt và khí tượng thời gian thực mới nhất thành công.",
+                "message": "Latest real-time surface observations and atmospheric meteorology updated successfully.",
             }
         except Exception as e:
             # Fallback to local extended CSV dataset if offline
@@ -676,7 +676,7 @@ class AQIDataManager:
                 "cooldown_remaining_seconds": 60,
                 "last_fetched_at": now_iso,
                 "trigger_type": "offline_fallback",
-                "message": "Đang sử dụng dữ liệu quan trắc lưu trữ của trạm (chế độ dự phòng ngoại tuyến).",
+                "message": "Using station cached observations (offline fallback mode).",
             }
 
     def save_live_fetch_log(self, region_key, station_id, trigger_type, df_merged, forecast_res):
@@ -730,7 +730,7 @@ class AQIDataManager:
         max_avail = str(df_base["date"].max())
 
         if not start_date or not end_date:
-            # Default: Latest day in the dataset ("Ngày hôm đó")
+            # Default: Latest day in the dataset
             end_date = max_avail
             dt_end = pd.to_datetime(max_avail)
             start_date = (dt_end - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
